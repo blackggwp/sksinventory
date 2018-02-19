@@ -1,0 +1,113 @@
+tr.rowheader th{
+	padding: 20px 5%;
+	background-color: #170E45;
+	color:#FFF;
+  	text-align:left;
+	width:auto;
+}
+tr.rowcontent td{
+	width:auto;
+	white-space: nowrap;	
+}
+
+tr.rowcontent:nth-child(even){
+	background:#C8E8CA;
+}
+.inputdate{
+	float: right;
+	padding-right: 20%;
+}
+.selectplant{
+	float: right;
+}
+tfoot {
+    display: table-header-group;
+}
+/*.tdischange {
+	background-color:#EF0000;
+}
+.trischange {
+	background-color:#FE1234;
+}*/
+.submitbtn {
+	float: right;
+	padding-right: 20%;
+}
+.menu {
+	text-align: -webkit-center;
+	float: left;
+}
+.menubtn {
+	padding: 10px;
+	    color: #0275d8;
+	    width: 50%;
+    line-height: 10;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-image: none;
+    background-color: transparent;
+    border-color: #0275d8;
+}
+.menubtn:hover {
+	background-color: #3B93E0;
+}
+.menusumrptbtn {
+	    display: table-cell; 
+	    color: #0275d8;
+	    width: 50%;
+    line-height: 10;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-image: none;
+    background-color: transparent;
+    border-color: #0275d8;
+}
+.menusumrptbtn:hover {
+	background-color: #3B93E0;
+}
+.txtKeyType {
+	text-align: center;
+}
+#login {
+	float: right;
+}
+.tblreport{
+	font-family: tahoma;
+	font-size: 11px;
+	max-width: 10px;
+
+}
+.tblreport thead tr th{
+    /*max-width: 30px;*/
+    font-size: 6px;
+	/*word-break: break-all;*/
+}
+.tblreport tbody td {
+	border: 0.5px solid gray;
+   /*display: inline-block;*/
+   /*text-align: center;*/
+   
+    white-space: nowrap;
+	    overflow: hidden;
+	    padding-left: 0px!important;
+	    padding-top: 0px!important;
+	    padding-bottom: 0px!important;
+	/*padding-left: 0.5px;*/
+	margin: 0px!important;
+	height: 0px!important;
+}
+#loading-indicator {
+ position: absolute;
+  left: 40%;
+  top: 70%;
+  margin-left: -32px;
+  margin-top: -32px;
+  border: 0;
+}
+.loading{
+	opacity: 0;
+}
+.showresult{
+	max-width: 768px;
+	/*margin: auto;*/
+}
