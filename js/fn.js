@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {    
     var isExportpdf = false;
     var cookieEmpcode = getCookie('empcode');
     var cookiePlant = getCookie('plant');
@@ -19,7 +19,8 @@ $(document).ready(function() {
         $(".inputdateqty").datepicker(
             { 
                 dateFormat:"dd-mm-yy",
-
+                changeMonth: true,
+                changeYear: true,
                 beforeShowDay: function(day) {
                 var day = day.getDay();
                     if (day == 1) {
@@ -33,7 +34,9 @@ $(document).ready(function() {
 
     if (keyType == 'waste') {
         $(".inputdateqty").datepicker({
-            dateFormat:"dd-mm-yy"
+            dateFormat:"dd-mm-yy",
+            changeMonth: true,
+            changeYear: true
         });
     };
 
@@ -98,6 +101,8 @@ $(document).ready(function() {
         $('.showresult').removeClass('loading');
         $('#tblreport').removeClass('loading');
     });
+    // select2
+    $('.dropDownOutletCode').select2();
 
 function chkval(data){
 
@@ -107,18 +112,6 @@ function chkval(data){
     }else{
         return;
     }
-}
-
-function datatableExport(t){
-   
-    $(t).DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'excel', 'print','copy'
-        ],
-        paging: false,
-        searching: false
-    } );
 }
 
 function loadRptSumMonth(){
@@ -138,6 +131,8 @@ function loadRptSumWeek(){
         $('.datestart').datepicker(
         { 
             dateFormat:'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
             beforeShowDay: function(day) {
             var day = day.getDay();
             if (day == 1) {
@@ -190,6 +185,8 @@ function loadWasteRpt(){
             $('.dateend').datepicker({
                 minDate: dsval,
                 dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                changeYear: true,
                 selectOtherMonths: true
             });
                 $('.dateend').focus().preventDefault();
@@ -233,16 +230,17 @@ function loadWeekRpt(){
     setCookie('keytype','',-1);
     $('#main').load('form/weekreport.php',function(){
         $('.datestart').datepicker({
-         beforeShowDay: function(day) {
-            var day = day.getDay();
-            if (day == 1) {
-                return [true, "somecssclass"]
-            } else {
-                return [false, "someothercssclass"]
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            beforeShowDay: function(day) {
+                var day = day.getDay();
+                if (day == 1) {
+                    return [true, "somecssclass"]
+                } else {
+                    return [false, "someothercssclass"]
+                }
             }
-         },
-         dateFormat: 'dd-mm-yy'
-
         });
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val(); 
@@ -264,7 +262,9 @@ function loadMonthRpt(){
     //     var dsval = $('.datestart').val(); 
     //     $('.dateend').datepicker({
     //         minDate: dsval,
-    //         dateFormat: 'dd-mm-yy'
+    //         dateFormat: 'dd-mm-yy',
+            // changeMonth: true,
+            // changeYear: true
     //     });
     //         $('.dateend').focus().preventDefault();
     //     });
@@ -323,7 +323,7 @@ function getCookie(cname) {
 
 function checkLogin(){
     
-    var $plant = $('.dropDownPlant').val();
+    var $plant = $('.dropDownOutletCode').val();
     var $empcode = $('.empcode').val();
 
     if (($empcode != '') && ($plant != null)) {
@@ -347,14 +347,12 @@ function checkDate(){
 
 function senddateToWaste(){
     var date = $('#frmrpt').serialize();
-        
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
             var tbldata = r;
             $('.result').html(tbldata);
-            datatableExport('.tblreport');
-            $('.exportPDF').click(function(event) {
-                exportPDFFunc(tbldata);
-            });
+            // $('.exportPDF').click(function(event) {
+            //     exportPDFFunc(tbldata);
+            // });
             }
         });
 }
@@ -369,6 +367,14 @@ function senddateToWeek(){
 
           var arr = ['Beg', 'Code', 'Name'];
             $('#tblreport').dxDataGrid({ ////Devexpress
+                selection: {
+                    mode: "multiple"
+                },
+                "export": {
+                    enabled: true,
+                    fileName: "matmg",
+                    allowExportSelectedData: true
+                },
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
@@ -394,12 +400,12 @@ function senddateToWeek(){
                 }
             });
             $('.result').html(dx['html']);
-            // datatableExport('.tblreport');
-            $('.exportPDF').click(function(event) {
-                var tbldata = $('#tblreport').html();
-                // console.log(tbldata);
-                exportPDFFunc(tbldata);
-            });
+
+            // $('.exportPDF').click(function(event) {
+            //     var tbldata = $('#tblreport').html();
+            //     // console.log(tbldata);
+            //     exportPDFFunc(tbldata);
+            // });
         }
         });
 }
@@ -439,12 +445,12 @@ function senddateToMonth(){
                 }
             });
             $('.result').html(dx['html']);
-            // datatableExport('.tblreport');
-            $('.exportPDF').click(function(event) {
-                var tbldata = $('#tblreport').html();
-                // console.log(tbldata);
-                exportPDFFunc(tbldata);
-            });
+
+            // $('.exportPDF').click(function(event) {
+            //     var tbldata = $('#tblreport').html();
+            //     // console.log(tbldata);
+            //     exportPDFFunc(tbldata);
+            // });
             }
 
         });
@@ -456,10 +462,9 @@ function senddateToSumWeek(){
         $.ajax({url: "./script/q_sumweekrpt.php?plant=" + cookiePlant+'&empcode='+cookieEmpcode,data:date, success: function(r){
             var tbldata = r;
             $('.result').html(tbldata);
-            datatableExport('.tblreport');
-            $('.exportPDF').click(function(event) {
-                exportPDFFunc(tbldata);
-            });
+            // $('.exportPDF').click(function(event) {
+            //     exportPDFFunc(tbldata);
+            // });
         }
         });
 }
@@ -678,8 +683,9 @@ function delPdf(){
 }
 function isDatePicker(dpk){
     $( dpk ).datepicker({
-        dateFormat: 'dd-mm-yy'
-        
+        dateFormat: 'dd-mm-yy',
+        changeMonth: true,
+        changeYear: true
     });
 }
 function isEnterKey(data){

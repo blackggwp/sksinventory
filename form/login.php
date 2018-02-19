@@ -1,8 +1,7 @@
 <?php
   include './script/conn.php';
-  $sql = "SELECT [PLANT]
-          FROM [SKS_WEB].[dbo].[PLANT_MASTER]";
-  $result = $conn->query($sql);
+  $sql = " SELECT Outletcode, plantid FROM matmg_outlet ";
+  $outletResults = $conn->query($sql);
   $ck = $_COOKIE;
 ?>
 <img src="./img/loading/ring.gif" id="loading-indicator" style="display:none" />
@@ -25,15 +24,17 @@
               </div>
               <div class="modal-body">
                 <h2>Plant</h2>
-                      <select class="dropDownPlant form-control input" name="selectPlant" required></br>
+                      <select class="dropDownOutletCode form-control input" name="selectPlant" style="width: 100%" required></br>
                       <option selected disabled>Choose here</option>
-                      <?
-                        foreach ($result as $res) {
-                          echo '<option value="'.$res[PLANT].'">'.$res[PLANT].'</option>';
+                      <?php
+                        foreach ($outletResults as $outlet) {
+                          echo '<option value="'.$outlet[PLANT].'">'.$outlet[Outletcode].'</option>';
                         }
                       ?>
                     </select>
-                <h2>EmpCode</h2><input class="empcode form-control" type="number" min="1" name="empcode" maxlength="6">
+                <h2>EmpCode</h2>
+                <label id="empcode-error" class="error" for="empcode"></label><br>
+                <input class="empcode form-control" type="number" name="empcode">
               </div>
               <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->

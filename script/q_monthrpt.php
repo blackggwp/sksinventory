@@ -49,7 +49,7 @@ $cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  * ma
 
 $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($dateend)).'</strong>'.'</h3>';
 
-$exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
+// $exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
 
 // $sql ="drop table txm;
 

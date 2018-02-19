@@ -68,7 +68,7 @@ $dateHeader =  '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($firstday)).'<
 // $ajdata = $table;
 // echo '<input type="submit" name="exportPDF" value="'.$ajdata.'">';
 
-$exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
+// $exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
 // echo "</form>";
 
 // $sql ="drop table txw;

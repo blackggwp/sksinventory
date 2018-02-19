@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Bangkok');
 $hostname = '192.168.0.205\APPWEBPRD';
 $username = 'sa';
 $password = 'P@ssw0rd';

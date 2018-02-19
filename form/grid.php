@@ -20,13 +20,14 @@ $sqlDepart = $conn->query($sql);
     <h1>Key <? echo ''.$g['keytype'].'';?></h1>
   </div>
       <div class="txtdate">
+      <h2>Date: </h2>
         <input type="text" name="dateqty" class="inputdateqty" value="" placeholder="Choose Date">
       </div>
       <div id="secFilterDepart">  <!--******** Section Filter Department -->
         <form>
           <h2>Department: </h2>
           <select class="dropdownDepart form-control input" name="selectFilterDepart" required></br>
-            <option selected disabled>Choose here</option>
+            <option selected disabled>Choose Depart</option>
             <option value="kitchen">Kitchen</option>
             <option value="korean">Korean</option>
             <option value="service">Service</option>

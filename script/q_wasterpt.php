@@ -49,7 +49,7 @@ $cost2 = "CONVERT(NVARCHAR,(CONVERT(numeric(18,1),matmg_pur.PRICE * ($total)))) 
 $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($dateend)).'</strong>'.'</h3>';
 echo "$dateHeader";
 
-echo '<a class="exportPDF">ExportPDF</a>';
+// echo '<a class="exportPDF">ExportPDF</a>';
 
 
 $sql ="drop table txwes;
