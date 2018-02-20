@@ -3,37 +3,35 @@ $(function() {
   // Initialize form validation on the registration form.
   // It has the name attribute "registration"
 
-
-  $("form[name='login_form']").validate({
+  $("form[name='form_login']").validate({
+    // It will enable hidden field validation.
+    // So You will get validation for Select 2
+    ignore: [],
+    // ignore: 'input[type=hidden]',
     // Specify validation rules
     rules: {
       // The key name on the left side is the name attribute
       // of an input field. Validation rules are defined
       // on the right side
-      login_emaili: "required",
-      login_password: "required",
-      login_email: {
+      selectPlant: "required",
+      empcode: "required",
+      empcode: {
         required: true,
-        // Specify that email should be validated
-        // by the built-in "email" rule
-        email: true
-      },
-      login_password: {
-        required: true
-        // minlength: 6
+        number: true,
+        minlength: 6,
+        maxlength: 6
       }
     },
     // Specify validation error messages
     messages: {
-      // login_email: "กรุณากรอกอีเมล์",
-      login_password: {
-        required: "กรุณากรอกรหัสผ่าน"
-        // minlength: "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร"
+      selectPlant: {
+        required: "กรุณาเลือกสาขา"
       },
-      login_email: {
-      	required: "กรุณากรอกอีเมล์",
-      	email: "กรุณากรอกอีเมล์ให้ถูกต้อง"
-
+      empcode: {
+        required: "กรุณาระบุรหัสพนักงาน",
+        number: "กรุณาระบุเป็นตัวเลข",
+        minlength: "กรุณากรอกรหัสอย่างน้อย 6 ตัวอักษร",
+        maxlength: "กรุณากรอกรหัสไม่เกิน 6 ตัวอักษร"
       }
     },
     // Make sure the form is submitted to the destination defined
@@ -42,123 +40,16 @@ $(function() {
       form.submit();
     }
   });
-
-
-  $("form[id='form_register']").validate({
+  
+  $("form[name='form_data']").validate({
     rules: {
-    	//refer accord to name element
-      registerEmail: "required",
-      registerPassword: "required",
-      registerTel: "required",
-      registerBirthdate: "required",
-
-      registerEmail: {
-        required: true,
-        email: true
-      },
-      registerPassword: {
-        required: true,
-        minlength: 6
-      },
-      registerTel: {
-      	required: true,
-      	digits:true,
-        minlength: 10,
-        maxlength: 10
-      },
-      registerPerid: {
-        digits:true,
-        minlength: 13,
-        maxlength: 13
-      }
-    },
-    // Specify validation error messages
-    messages: {
-    	registerEmail: {
-      		required: "กรุณากรอกอีเมล์",
-      		email: "กรุณากรอกอีเมล์ให้ถูกต้อง"
-      	},
-      	registerPassword: {
-        	required: "กรุณากรอกรหัสผ่าน",
-        	minlength: "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร"
-      	},
-        registerTel: {
-          required: "กรุณากรอกเบอร์โทรศัพท์",
-          minlength: "กรุณากรอกหมายเลขอย่างน้อย 10 ตัวอักษร",
-          maxlength: "กรุณากรอกหมายเลขไม่เกิน 10 ตัวอักษร"
-        },
-        registerPerid: {
-          minlength: "กรุณากรอกหมายเลขอย่างน้อย 13 ตัวอักษร",
-          maxlength: "กรุณากรอกหมายเลขไม่เกิน 13 ตัวอักษร"
-        },
-        registerBirthdate: {
-          required: "กรุณากรอกวันเดือนปีเกิด"
-        }
-
-    },
-    submitHandler: function(form) {
-      form.submit();
-    }
-  });
-
-  $("form[id='form_forgetpass']").validate({
-    rules: {
-      //refer accord to name element
-      input_forget_email: "required",
-
-      input_forget_email: {
-        required: true,
-        email: true
-      }
-    },
-    // Specify validation error messages
-    messages: {
-      input_forget_email: {
-          required: "กรุณากรอกอีเมล์",
-          email: "กรุณากรอกอีเมล์ให้ถูกต้อง"
-        }
-
-    },
-    submitHandler: function(form) {
-      form.submit();
-    }
-  });
-
-  $("form[id='changepass_form']").validate({
-    rules: {
-      //refer accord to name element
-      input_new_pass: "required",
-      input_new_pass_confirm: "required",
-
-      input_new_pass: {
-        required: true,
-        minlength: 6
-      },
-      input_new_pass_confirm: {
-        required: true,
-        minlength: 6,
-        equalTo: "#input_new_pass"
-      }
-    },
-    // Specify validation error messages
-    messages: {
-      // login_email: "กรุณากรอกอีเมล์",
-      input_new_pass: {
-        required: "กรุณากรอกรหัสผ่าน",
-        minlength: "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร",
-        equalTo: "ท่านใส่รหัสผ่านไม่ตรงกัน"
-      },
-      input_new_pass_confirm: {
-        required: "กรุณากรอกรหัสผ่าน",
-        minlength: "กรุณากรอกรหัสผ่านอย่างน้อย 6 ตัวอักษร",
-        equalTo: "ท่านใส่รหัสผ่านไม่ตรงกัน"
+      mat_qty: {
+        number: true,
+        require_from_group: [1, ".mat_qty"]
       }
     },
     submitHandler: function(form) {
       form.submit();
     }
   });
-
-
-
 });

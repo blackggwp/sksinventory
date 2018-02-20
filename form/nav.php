@@ -8,7 +8,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="./home.php">Home</a>
+			<a class="navbar-brand" href="./index.php">Home</a>
 			<a class="rptnav navbar-brand" href="#">Report</a>
 		</div>
 	</div>

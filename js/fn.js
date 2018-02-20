@@ -6,13 +6,17 @@ $(document).ready(function() {
 
     if ((cookieEmpcode == '') || (cookiePlant == '')) {
         $('.modalLogin').modal('toggle');
-        $(':input.empcode').keypress(function(e) {
-            if(e.which == 13) {
-                $('.submitlogin').click();
-                    e.preventDefault();
-            }
-        });
-    };
+
+        // prevent enter key when not yet enter empcode and plant
+        // $(':input.empcode').keypress(function(e) {
+        //     if(e.which == 13) {
+        //         $('.submitlogin').click();
+        //             e.preventDefault();
+        //     }
+        // });
+        
+    }
+
     var isedit=false;
     
     if (keyType == 'ending') {
@@ -30,7 +34,7 @@ $(document).ready(function() {
                     }
             }
         });
-    };
+    }
 
     if (keyType == 'waste') {
         $(".inputdateqty").datepicker({
@@ -38,7 +42,7 @@ $(document).ready(function() {
             changeMonth: true,
             changeYear: true
         });
-    };
+    }
 
     $('.invenbtn').click(function(event) {
         setCookie('keytype','',-1);
@@ -46,7 +50,7 @@ $(document).ready(function() {
         keyType = 'ending';
         setCookie('keytype',keyType,1);
 
-        window.location.replace("index.php?keytype=" + keyType);
+        window.location.replace("ending.php?keytype=" + keyType);
     });
 
     $('.lossbtn').click(function(event) {
@@ -55,7 +59,7 @@ $(document).ready(function() {
         keyType = 'waste';
         setCookie('keytype',keyType,1);
 
-        window.location.replace("index.php?keytype=" + keyType);
+        window.location.replace("waste.php?keytype=" + keyType);
         
     });
 
@@ -79,9 +83,12 @@ $(document).ready(function() {
     $('.rptnav').click(function(event) {
         loadRpt();
     });
-
-    $('.submitlogin').click(function(event) {
-        checkLogin();
+    $('#submitlogin').click(function(event) {
+        var $plant = $('.dropDownOutletCode').val();
+        var $empcode = $('.empcode').val();
+        if (($empcode != '') && ($empcode.length == 6) && ($plant != null)) {
+            checkLogin($empcode,$plant);
+        }
     });
 
     $('.logoutbtn').click(function(event) {
@@ -285,17 +292,13 @@ thisCalendar.datepicker('setDate', new Date(year, month, 1));
     });
 
 });
-        
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val();
             var deval = $('.dateend').val();
             chkval(dsval);
             chkval(deval);
-
             senddateToMonth();
-            // alert(dsval);
         });    
-        
     });
 }
 
@@ -321,24 +324,13 @@ function getCookie(cname) {
     return "";
 }
 
-function checkLogin(){
-    
-    var $plant = $('.dropDownOutletCode').val();
-    var $empcode = $('.empcode').val();
+function checkLogin($empcode,$plant){
+    setCookie('empcode',$empcode,1);
+    setCookie('plant',$plant,1);
+    $('.modalLogin').modal('toggle');
 
-    if (($empcode != '') && ($plant != null)) {
-        setCookie('empcode',$empcode,1);
-        setCookie('plant',$plant,1);    
-        $('.modalLogin').modal('toggle');
-
-        window.location.replace("home.php");  
-    }
-    else if ($empcode == '') {     
-        alert('Please enter empcode.');
-    }
-    else if ($plant == null) {
-        alert('Please choose plant.');
-    }
+    event.preventDefault(); 
+    window.location.replace("index.php");
 }
 
 function checkDate(){
@@ -553,7 +545,7 @@ function saveToTemp(callb){
         callb();
     }
     var $dateqty   = $('.inputdateqty').val();
-    var d = $('.frmdata').serialize();
+    var d = $('.form_data').serialize();
 
     if (d != '') {
         $.ajax({url: "./script/savetotemp.php",data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant + '&dateqty='+$dateqty + '&keytype='+keyType, success: function(r){

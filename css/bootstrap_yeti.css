@@ -1,167 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
-tr.rowheader th{
-  padding: 20px 5%;
-  background-color: #170E45;
-  color:#FFF;
-    text-align:left;
-  width:auto;
-}
-tr.rowcontent td{
-  width:auto;
-  white-space: nowrap;  
-}
-
-tr.rowcontent:nth-child(even){
-  background:#C8E8CA;
-}
-.inputdate{
-  float: right;
-  padding-right: 20%;
-}
-.selectplant{
-  float: right;
-}
-tfoot {
-    display: table-header-group;
-}
-/*.tdischange {
-  background-color:#EF0000;
-}
-.trischange {
-  background-color:#FE1234;
-}*/
-.submitbtn {
-  float: right;
-  padding-right: 20%;
-}
-.menu {
-  /*text-align: -webkit-center;*/
-  float: left;
-  width: 40%;
-}
-.menubtn {
- /* padding: 10px;
-      color: #0275d8;
-      width: 50%;
-    line-height: 10;
-    font-size: 20px;
-    margin-bottom: 20px;
-    background-image: none;
-    background-color: transparent;
-    border-color: #0275d8;*/
-    cursor:pointer;
-    width: 30%;
-    height: 180px;
-    border: none;
-     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.1s;
-    padding: 2px 16px;
-}
-.menubtn:hover {
-  background-color: #E99002!important;
-  color: #fff!important;
-    /*background-color: #4CAF50!important;*/
-/* On mouse-over, add a deeper shadow */
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-.endingbtn{
-    background:url('../img/icons/trolley.png') no-repeat!important;
-    background-position: center!important; 
-}
-.wastebtn{
-    background:url('../img/icons/fishbone (3).png') no-repeat!important;
-    background-position: center!important; 
-
-}
-.rptmainbtn{
-    background:url('../img/icons/newspaper (1).png') no-repeat!important;
-    background-position: center!important;     
-
-}
-.menusumrptbtn {
-      display: table-cell; 
-      color: #0275d8;
-      width: 50%;
-    line-height: 10;
-    font-size: 20px;
-    margin-bottom: 20px;
-    background-image: none;
-    background-color: transparent;
-    border-color: #0275d8;
-}
-.menusumrptbtn:hover {
-  background-color: #3B93E0;
-}
-.rptbtn{
-  cursor:pointer;
-    width: 30%;
-    height: 180px;
-    border: none;
-     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.1s;
-    padding: 2px 16px;
-  background:url('../img/icons/newspaper (1).png') no-repeat!important;
-    background-position: center!important;  
-}
-.rptbtn:hover{
-    background-color: #E99002!important;
-  color: #fff!important;
-    /*background-color: #4CAF50!important;*/
-/* On mouse-over, add a deeper shadow */
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-.summonthrptbtn{
-}
-.txtKeyType {
-  text-align: center;
-}
-#login {
-  float: right;
-}
-
-.tblreport{
-  font-family: tahoma;
-  font-size: 11px;
-  max-width: 10px;
-
-}
-.tblreport thead tr th{
-    /*max-width: 30px;*/
-    font-size: 6px;
-  /*word-break: break-all;*/
-}
-.tblreport tbody td {
-  border: 0.5px solid gray;
-   /*display: inline-block;*/
-   /*text-align: center;*/
-   
-    white-space: nowrap;
-      overflow: hidden;
-      padding-left: 0px!important;
-      padding-top: 0px!important;
-      padding-bottom: 0px!important;
-  /*padding-left: 0.5px;*/
-  margin: 0px!important;
-  height: 0px!important;
-}
-#loading-indicator {
- position: absolute;
-  left: 40%;
-  top: 70%;
-  margin-left: -32px;
-  margin-top: -32px;
-  border: 0;
-}
-.loading{
-  opacity: 0;
-}
-.showresult{
-  max-width: 768px;
-  /*margin: auto;*/
-}
-
 /*!
  * bootswatch v3.3.7
  * Homepage: http://bootswatch.com
@@ -7230,4 +7066,172 @@ input[type="checkbox"] {
 }
 .modal .close {
   color: #222222;
+}
+
+/* My Custom CSS */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+tr.rowheader th{
+  padding: 20px 5%;
+  background-color: #170E45;
+  color:#FFF;
+    text-align:left;
+  width:auto;
+}
+tr.rowcontent td{
+  width:auto;
+  white-space: nowrap;  
+}
+
+tr.rowcontent:nth-child(even){
+  background:#C8E8CA;
+}
+.inputdate{
+  float: right;
+  padding-right: 20%;
+}
+.selectplant{
+  float: right;
+}
+tfoot {
+    display: table-header-group;
+}
+/*.tdischange {
+  background-color:#EF0000;
+}
+.trischange {
+  background-color:#FE1234;
+}*/
+.submitbtn {
+  float: right;
+  padding-right: 20%;
+}
+.menu {
+  /*text-align: -webkit-center;*/
+  float: left;
+  width: 40%;
+}
+.menubtn {
+ /* padding: 10px;
+      color: #0275d8;
+      width: 50%;
+    line-height: 10;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-image: none;
+    background-color: transparent;
+    border-color: #0275d8;*/
+    cursor:pointer;
+    width: 30%;
+    height: 180px;
+    border: none;
+     /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.1s;
+    padding: 2px 16px;
+}
+.menubtn:hover {
+  background-color: #E99002!important;
+  color: #fff!important;
+    /*background-color: #4CAF50!important;*/
+/* On mouse-over, add a deeper shadow */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.endingbtn{
+    background:url('../img/icons/trolley.png') no-repeat!important;
+    background-position: center!important; 
+}
+.wastebtn{
+    background:url('../img/icons/fishbone (3).png') no-repeat!important;
+    background-position: center!important; 
+
+}
+.rptmainbtn{
+    background:url('../img/icons/newspaper (1).png') no-repeat!important;
+    background-position: center!important;     
+
+}
+.menusumrptbtn {
+      display: table-cell; 
+      color: #0275d8;
+      width: 50%;
+    line-height: 10;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-image: none;
+    background-color: transparent;
+    border-color: #0275d8;
+}
+.menusumrptbtn:hover {
+  background-color: #3B93E0;
+}
+.rptbtn{
+  cursor:pointer;
+    width: 30%;
+    height: 180px;
+    border: none;
+     /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.1s;
+    padding: 2px 16px;
+  background:url('../img/icons/newspaper (1).png') no-repeat!important;
+    background-position: center!important;  
+}
+.rptbtn:hover{
+    background-color: #E99002!important;
+  color: #fff!important;
+    /*background-color: #4CAF50!important;*/
+/* On mouse-over, add a deeper shadow */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.summonthrptbtn{
+}
+.txtKeyType {
+  text-align: center;
+}
+#login {
+  float: right;
+}
+
+.tblreport{
+  font-family: tahoma;
+  font-size: 11px;
+  max-width: 10px;
+
+}
+.tblreport thead tr th{
+    /*max-width: 30px;*/
+    font-size: 6px;
+  /*word-break: break-all;*/
+}
+.tblreport tbody td {
+  border: 0.5px solid gray;
+   /*display: inline-block;*/
+   /*text-align: center;*/
+   
+    white-space: nowrap;
+      overflow: hidden;
+      padding-left: 0px!important;
+      padding-top: 0px!important;
+      padding-bottom: 0px!important;
+  /*padding-left: 0.5px;*/
+  margin: 0px!important;
+  height: 0px!important;
+}
+#loading-indicator {
+ position: absolute;
+  left: 40%;
+  top: 70%;
+  margin-left: -32px;
+  margin-top: -32px;
+  border: 0;
+}
+.loading{
+  opacity: 0;
+}
+.showresult{
+  max-width: 768px;
+  /*margin: auto;*/
+}
+.error {
+  color: red;
 }

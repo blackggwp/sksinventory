@@ -18,12 +18,18 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
 
-  <!-- Move from footer -->
   <script src="js/jquery-3.1.0.min.js"></script>
     <script src="jqueryui/jquery-ui.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.dataTables.min.js"></script>   <!-- External Data table search api-->
+
+    <!-- External Data table search api-->
+    <script src="js/jquery.dataTables.min.js"></script>   
+    
     <script type="text/javascript" src="js/fn.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/form_validation.js"></script>
+    
     <!-- <script type="text/javascript" src="js/jspdf.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
 

@@ -28,11 +28,11 @@ FROM         matmg_inventory LEFT OUTER JOIN
 ?>
 <div class="submitbtn">
     <h3>Confirm Data</h3>
-    <button type="button" class="submitdata btn btn-success">Submit</button>
+    <button type="submit" class="submitdata btn btn-success">บันทึก</button>
 
 </div> <!-- Submit Btn-->
 
-<form method="post" class="frmdata" >
+<form method="post" class="form_data" name="form_data">
 
     <table class="example table table-striped table-hover">
         <thead>

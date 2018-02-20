@@ -14,7 +14,7 @@ if (isset($_GET['q'])) {
         <button type="button" class="submitdata btn btn-success">Submit</button>
         <button type="button" class="sbtn">Submit</button>
     </div> <!-- Submit Btn-->
-    <form method="post" class="frmdata" >
+    <form method="post" class="form_data" name="form_data">
 
         <?php  
         if (isset($_GET['q'])) {

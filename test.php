@@ -2,28 +2,24 @@
 <html lang="en">
 <?php
 include 'header.php';
+include 'script/conn.php';
+  $sql = " SELECT Outletcode, plantid FROM matmg_outlet ";
+  $outletResults = $conn->query($sql);
+//   print_r($outletResults);
+  foreach($outletResults as $outlet){
+    //   echo '<hr>';
+    // print_r($outlet);
+    // echo '</hr>';
+    if ($outlet[plantid] == '10AG') {
+        $outletCode = $outlet[Outletcode];
+    }
+    
+  }
+  echo $outletCode;
 ?>
 <body>
     
-<table class="tblExcel">
-    <thead>
-        <th>h1</th>
-        <th>h2</th>
-        <th>h3</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td><td>2</td><td>2</td>
-        </tr>
-        <tr>
-            <td>2</td><td>2</td><td>2</td>
-        </tr>
-        <tr>
-            <td>3</td><td>2</td><td>2</td>
-        </tr>
-        
-    </tbody>
-</table>
+
 
 </body>
 <footer>
