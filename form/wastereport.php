@@ -1,12 +1,15 @@
+<?php
+date_default_timezone_set('Asia/Bangkok');
+?>
 <div class="page-header">
-  <h3>Waste Report</h3>
+  <h3>รายงานสูญเสีย</h3>
 </div>
 <form id="frmrpt">
 <div class="container-fluid">
 	<div class="showdaterpt">
-		<p>From
+		<p>จากวันที่
 		<input type="text" name="datestart" class="datestart" readonly="readonly" value="<? echo date('d-m-Y');?>">
-		To<input type="text" name="dateend" class="dateend" readonly="readonly" value="<? echo date('d-m-Y');?>"></p>
+		ถึง<input type="text" name="dateend" class="dateend" readonly="readonly" value="<? echo date('d-m-Y');?>"></p>
 
 		 <!-- <input  name="datestart" type="text" class="datestart" placeholder="From" readonly="readonly">
 		 </br>
@@ -14,8 +17,9 @@
 		 </br> -->
 
 	</div>
+	<br>
 	<div class="showrpt">
-		<button type="button" class="showrptbtn btn btn-success">Show Report</button> 
+		<button type="button" class="showrptbtn btn btn-success">แสดงรายงาน</button> 
 	</div>
 </div>
 </form>

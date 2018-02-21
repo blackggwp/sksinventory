@@ -8,8 +8,8 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="./index.php">Home</a>
-			<a class="rptnav navbar-brand" href="#">Report</a>
+			<a class="navbar-brand" href="./index.php">หน้าหลัก</a>
+			<a class="rptnav navbar-brand" href="#">รายงาน</a>
 		</div>
 	</div>
 </nav>

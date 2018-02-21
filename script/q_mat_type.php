@@ -10,7 +10,7 @@ if (isset($_GET['q'])) {
     $results = $conn->query($sql);      
     ?>
     <div class="submitbtn">
-        <h3>Confirm Data</h3>
+        <h3>ยืนยันการบันทึกข้อมูล</h3>
         <button type="button" class="submitdata btn btn-success">Submit</button>
         <button type="button" class="sbtn">Submit</button>
     </div> <!-- Submit Btn-->

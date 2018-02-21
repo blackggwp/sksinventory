@@ -23,8 +23,21 @@
     <script src="js/bootstrap.min.js"></script>
 
     <!-- External Data table search api-->
-    <script src="js/jquery.dataTables.min.js"></script>   
-    
+    <!-- <script src="js/jquery.dataTables.min.js"></script>    -->
+    <!-- local -->
+    <!-- <link rel="stylesheet" type="text/css" href="DataTables/datatables.min.css"/> -->
+    <!-- <script type="text/javascript" src="DataTables/datatables.min.js"></script> -->
+    <!-- cdn -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    <!-- https://code.jquery.com/jquery-1.12.4.js -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <!-- External Data table search api////////////////-->
+
     <script type="text/javascript" src="js/fn.js"></script>
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.min.js"></script>

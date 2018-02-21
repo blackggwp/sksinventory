@@ -140,7 +140,7 @@ function printtable($results){
 	$cols=array();
 	for ($counter = 0; $counter < $tcolumn; $counter ++) {
 		$meta = $results->getColumnMeta($counter);
-		$h.='<th>'.$meta['name'].'</th>';
+		$h.='<th style="font-size:1em;">'.$meta['name'].'</th>';
 
 	}   
 

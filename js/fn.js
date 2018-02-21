@@ -114,7 +114,7 @@ $(document).ready(function() {
 function chkval(data){
 
     if (data == '') {
-        alert('Please Choose Date !!!');
+        alert('กรุณาเลือกวันที่ก่อนครับ');
         preventDefault; //Stop Action
     }else{
         return;
@@ -334,7 +334,7 @@ function checkLogin($empcode,$plant){
 }
 
 function checkDate(){
-    alert('please enter date');
+    alert('กรุณาเลือกวันที่ก่อนครับ');
 }
 
 function senddateToWaste(){
@@ -345,6 +345,14 @@ function senddateToWaste(){
             // $('.exportPDF').click(function(event) {
             //     exportPDFFunc(tbldata);
             // });
+            var table = $('.tblreport').DataTable({
+                paging:         false,
+                "searching": false,
+                dom: 'Bfrtip',
+                buttons: [
+                    'excel'
+                ]
+            });
             }
         });
 }
@@ -357,7 +365,7 @@ function senddateToWeek(){
             var dx = JSON.parse(r);
             tbldata = (dx['res']);
 
-          var arr = ['Beg', 'Code', 'Name'];
+        //   var arr = ['Beg', 'Code', 'Name'];
             $('#tblreport').dxDataGrid({ ////Devexpress
                 selection: {
                     mode: "multiple"
@@ -412,6 +420,14 @@ function senddateToMonth(){
 
           var arr = ['Beg', 'Code', 'Name'];
             $('#tblreport').dxDataGrid({ ////Devexpress
+                selection: {
+                    mode: "multiple"
+                },
+                "export": {
+                    enabled: true,
+                    fileName: "matmg",
+                    allowExportSelectedData: true
+                },
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
@@ -482,9 +498,14 @@ function filterTableAndInput(){
             } );
 
         // DataTable
-        var table = $('.example').DataTable( {
+        var table = $('.example').DataTable({
             paging:         false,
-        } );
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'excel'
+            ]
+        });
 
         $(".example .inputqty").keydown(function (e) {
 

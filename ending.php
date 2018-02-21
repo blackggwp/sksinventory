@@ -25,7 +25,7 @@ include 'header.php';
       </div> -->
       <div id="main">
         <div id="content">
-          <? include 'form/grid.php';?>
+          <? include 'form/grid_ending.php';?>
           
         </div>
       </div>

@@ -7103,12 +7103,12 @@ tfoot {
 }*/
 .submitbtn {
   float: right;
-  padding-right: 20%;
+  /* padding-right: 20%; */
 }
 .menu {
   /*text-align: -webkit-center;*/
   float: left;
-  width: 40%;
+  width: 60%;
 }
 .menubtn {
  /* padding: 10px;
@@ -7121,7 +7121,7 @@ tfoot {
     background-color: transparent;
     border-color: #0275d8;*/
     cursor:pointer;
-    width: 30%;
+    width: 40%;
     height: 180px;
     border: none;
      /* Add shadows to create the "card" effect */
@@ -7166,7 +7166,7 @@ tfoot {
 }
 .rptbtn{
   cursor:pointer;
-    width: 30%;
+    width: 40%;
     height: 180px;
     border: none;
      /* Add shadows to create the "card" effect */
@@ -7234,4 +7234,7 @@ tfoot {
 }
 .error {
   color: red;
+}
+.inputdateqty {
+  width: 100%;
 }

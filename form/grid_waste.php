@@ -17,17 +17,18 @@ $sqlDepart = $conn->query($sql);
   <div class="container-fluid">
     <div class="row-fluid">
     <div class="txtKeyType">
-    <h1>Key <? echo ''.$g['keytype'].'';?></h1>
+    <h1>คีย์สูญเสีย</h1>
   </div>
       <div class="txtdate">
-      <h2>Date: </h2>
-        <input type="text" name="dateqty" class="inputdateqty" value="" placeholder="Choose Date">
+      <h2>วันที่:</h2>
+        <input type="text" name="dateqty" class="inputdateqty" value="" placeholder="เลือกวันที่">
       </div>
       <div id="secFilterDepart">  <!--******** Section Filter Department -->
         <form>
-          <h2>Department: </h2>
+          <h2>แผนก:</h2>
           <select class="dropdownDepart form-control input" name="selectFilterDepart" required></br>
-            <option selected disabled>Choose Depart</option>
+            <option selected disabled>เลือกแผนก</option>
+            <option value="all">All</option>
             <option value="kitchen">Kitchen</option>
             <option value="korean">Korean</option>
             <option value="service">Service</option>

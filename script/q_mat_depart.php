@@ -17,17 +17,19 @@ if (($plant != '') && ($depart != '')) {
 FROM         matmg_inventory LEFT OUTER JOIN
                       MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE
   WHERE 
-  (dbo.MATERIAL_MASTER.PLANT  = '".$plant."')
-  AND ([matmg_inventory].MAT_DEPART = '".$depart."')
+  (dbo.MATERIAL_MASTER.PLANT  = '".$plant."') ";
+  if ($depart != 'all') {
+    $sql .= " AND ([matmg_inventory].MAT_DEPART = '".$depart."') ";
+  }
 
-  ORDER BY  dbo.matmg_inventory.MAT_CODE ";
+  $sql .= " ORDER BY  dbo.matmg_inventory.MAT_CODE ";
   // echo "$sql";
   $results = $conn->query($sql);
 }
 
 ?>
 <div class="submitbtn">
-    <h3>Confirm Data</h3>
+    <h3>ยืนยันการบันทึกข้อมูล</h3>
     <button type="submit" class="submitdata btn btn-success">บันทึก</button>
 
 </div> <!-- Submit Btn-->
