@@ -61,7 +61,7 @@ FROM         matmg_inventory LEFT OUTER JOIN
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">
                 <input type="hidden" name="unitprice[]" value="'.$res[UNIT_PRICE].'"></td>';
-                    echo '<td class="tdqty"> <input class="inputqty form-control" type="text" min="1" 
+                    echo '<td class="tdqty"> <input class="inputqty form-control" type="text" min="0" 
                     name="mat_qty[]"
                      >
                     </td>';                          

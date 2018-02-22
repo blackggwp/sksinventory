@@ -70,9 +70,16 @@ $(document).ready(function() {
     });
 
     $('.dropdownDepart,.dropdownGroup,.inputdateqty').change(function(event) {
-        // saveToTemp(function(){
-        //     isedit=false;
-
+        // loop value inputqty
+        // $('input[name^="mat_qty"]').each(function() {
+        //     // check value inputqty
+        //     if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
+        //         // console.log($(this).val());
+                
+        //         saveToTemp(function(){
+        //             isedit=false;
+        //         });
+        //     }
         // });
         var ddval = $('.inputdateqty').val();
         chkval(ddval);
@@ -346,7 +353,7 @@ function senddateToWaste(){
             //     exportPDFFunc(tbldata);
             // });
             var table = $('.tblreport').DataTable({
-                paging:         false,
+                paging: false,
                 "searching": false,
                 dom: 'Bfrtip',
                 buttons: [
@@ -508,26 +515,32 @@ function filterTableAndInput(){
         });
 
         $(".example .inputqty").keydown(function (e) {
-
-            isedit=true;
-
+            isedit = true;
             $(this).addClass('tdischange');
             $(this).next().addClass('tdischange');
             $(this).parent().parent().addClass('trischange');
-            
+
             if (e.keyCode == 13) { //Enter press for next input
                 try{
+                    // disable export button when enter press
+                    var table = $('.example').DataTable();
+                    table.buttons().disable();
+
                     var $inputMatQty = $(this).parent().parent().next().find('.inputqty').focus().select();
                     // var $inputMatQty = $(this).parent().parent().next().find('.inputqty').css("background-color", "yellow");
 
                     }
-                catch(e){}
+                catch(e){
+                    console.log('Error: '+e);
+                }
             };
 
             // Allow: backspace, delete, tab, escape, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
              // Allow: Ctrl+A, Command+A
-             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             // Allow: Ctrl+F, Command+F
+             (e.keyCode === 70 && (e.ctrlKey === true || e.metaKey === true)) || 
              // Allow: home, end, left, right, down, up
              (e.keyCode >= 35 && e.keyCode <= 40)) {
                  // let it happen, don't do anything
@@ -553,7 +566,6 @@ function saveToTemp(callb){
     if(!isedit){
         callb();
     }
-
     var isfound=false;
     var $g=$('.tdqty:not(.tdischange)');
 

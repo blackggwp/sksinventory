@@ -7237,4 +7237,8 @@ tfoot {
 }
 .inputdateqty {
   width: 100%;
+  cursor: pointer;
+}
+.dropdownDepart {
+  cursor: pointer;
 }
