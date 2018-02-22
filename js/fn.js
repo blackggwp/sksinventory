@@ -71,16 +71,16 @@ $(document).ready(function() {
 
     $('.dropdownDepart,.dropdownGroup,.inputdateqty').change(function(event) {
         // loop value inputqty
-        // $('input[name^="mat_qty"]').each(function() {
-        //     // check value inputqty
-        //     if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
-        //         // console.log($(this).val());
+        $('input[name^="mat_qty"]').each(function() {
+            // check value inputqty
+            if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
+                // console.log($(this).val());
                 
-        //         saveToTemp(function(){
-        //             isedit=false;
-        //         });
-        //     }
-        // });
+                saveToTemp(function(){
+                    isedit=false;
+                });
+            }
+        });
         var ddval = $('.inputdateqty').val();
         chkval(ddval);
         loaddepart($(this));
@@ -515,10 +515,11 @@ function filterTableAndInput(){
         });
 
         $(".example .inputqty").keydown(function (e) {
-            isedit = true;
-            $(this).addClass('tdischange');
-            $(this).next().addClass('tdischange');
-            $(this).parent().parent().addClass('trischange');
+            // isedit = true;
+            // $(this).css('background-color','red');
+            // $(this).addClass('tdischange');
+            // $(this).next().addClass('tdischange');
+            // $(this).parent().parent().addClass('trischange');
 
             if (e.keyCode == 13) { //Enter press for next input
                 try{
@@ -562,7 +563,15 @@ function filterTableAndInput(){
 }
 
 function saveToTemp(callb){
-
+    $('input[name^="mat_qty"]').each(function() {
+        if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
+            isedit = true;
+            // $(this).css('background-color','red');
+            $(this).addClass('tdischange');
+            $(this).next().addClass('tdischange');
+            $(this).parent().parent().addClass('trischange');
+        }
+    });
     if(!isedit){
         callb();
     }
