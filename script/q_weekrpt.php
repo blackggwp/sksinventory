@@ -104,21 +104,6 @@ $sql1 ="
 ";
 $tempTable = $conn->query($sql1);
 
-// $sql3 = "SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name , matmg_inventory.UNIT_CODE as unit, matmgdb.BEGINING_QTY as Beg ,SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
-
-// FROM         matmg_inventory INNER JOIN
-// MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE LEFT OUTER JOIN
-// matmg_pur ON MATERIAL_MASTER.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-// txw ON MATERIAL_MASTER.MAT_CODE = txw.MATERIAL LEFT OUTER JOIN
-// matmgdb ON MATERIAL_MASTER.MAT_CODE = matmgdb.MAT_CODE
-// WHERE     (MATERIAL_MASTER.PLANT = '$plant') 
-
-
-// GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
-
-// HAVING $h
-
-// ";
 $sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name , matmg_inventory.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
 
 FROM         matmg_inventory INNER JOIN
@@ -135,22 +120,15 @@ HAVING $h) AS t1 LEFT OUTER JOIN
                       matmgdb AS matmgdb_1 ON matmgdb_1.MAT_CODE = t1.Code 
                        $filterBeg
 ";
-// echo "$sql3";
-
-
-
-// $html2pdf->WriteHTML($content);
-// $html2pdf->Output('exemple.pdf');
+// echo $sql2;
 
 $results = $conn->query($sql2);
 $results2 = $results;
 $results2->execute();
 $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
-
-
 $dx=array();
-
+$dx["debugQuery"]=$sql2;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
@@ -159,11 +137,6 @@ $dx["colName"] = getColName($results);
 $json=json_encode($dx);
 echo $json;
 exit;
-
-
-// $table = printtable($results,$cost);
-
-// echo $table;
 
 function getColName($results){
 	$a=array();

@@ -97,9 +97,9 @@ $results1 = $conn->query($sql);
 //                       txwes ON matmgdb.MAT_CODE = txwes.MAT_CODE
 //                       WHERE (matmgdb.PLANT = '$plant') AND $w";
 
-$sql3 = "SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost2
+$sql3 = "SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit, $cost2
 
-FROM         matmg_inventory INNER JOIN
+FROM matmg_inventory INNER JOIN
 MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE LEFT OUTER JOIN
 matmg_pur ON MATERIAL_MASTER.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
 txwes ON MATERIAL_MASTER.MAT_CODE = txwes.MATERIAL LEFT OUTER JOIN
@@ -110,12 +110,9 @@ GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT
 HAVING $h
 
 ";
-
 // echo "$sql3";
 $results = $conn->query($sql3);
-
 $table = printtable($results);
-
 echo $table;
 
 function printtable($results){
@@ -126,6 +123,7 @@ function printtable($results){
 	$cols=array();
 	for ($counter = 0; $counter < $tcolumn; $counter ++) {
 		$meta = $results->getColumnMeta($counter);
+		// $utf8 = iconv("tis-620", "utf-8", $meta['name'] );
 		$h.='<th style="font-size:1em;">'.$meta['name'].'</th>';
 
 	}   
