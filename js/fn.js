@@ -421,7 +421,7 @@ function senddateToMonth(){
     var date = $('#frmrpt').serialize();
         
         $.ajax({url: "./script/q_monthrpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            // var tbldata = r;
+            // console.log(r);
             var dx = JSON.parse(r);
             tbldata = (dx['res']);
 

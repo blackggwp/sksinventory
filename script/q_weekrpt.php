@@ -104,17 +104,14 @@ $sql1 ="
 ";
 $tempTable = $conn->query($sql1);
 
-$sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name , matmg_inventory.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
+$sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name , matmg_inventory.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
 
-FROM         matmg_inventory INNER JOIN
-MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE LEFT OUTER JOIN
-matmg_pur ON MATERIAL_MASTER.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-txw ON MATERIAL_MASTER.MAT_CODE = txw.MATERIAL LEFT OUTER JOIN
-matmgdb ON MATERIAL_MASTER.MAT_CODE = matmgdb.MAT_CODE
-WHERE     (MATERIAL_MASTER.PLANT = '$plant') 
+ FROM matmgdb RIGHT OUTER JOIN
+ matmg_pur INNER JOIN
+ matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
+ txw ON matmg_pur.MAT_CODE = txw.MATERIAL
 
-
-GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
+GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h) AS t1 LEFT OUTER JOIN
                       matmgdb AS matmgdb_1 ON matmgdb_1.MAT_CODE = t1.Code 
@@ -128,7 +125,7 @@ $results2->execute();
 $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
 $dx=array();
-$dx["debugQuery"]=$sql2;
+// $dx["debugQuery"]=$sql2;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
