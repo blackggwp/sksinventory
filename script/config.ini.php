@@ -1,6 +1,6 @@
 <?php
- define('DB_SERVER', "192.168.0.205\APPWEBPRD");
+ define('DB_SERVER', "192.168.0.251");
  define('DB_USER', "sa");
- define('DB_PASS', "P@ssw0rd");
- define('DB_DATABASE', "SKS_WEB");
+ define('DB_PASS', "88888888pP");
+ define('DB_DATABASE', "matmg");
  ?>

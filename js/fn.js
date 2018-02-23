@@ -69,17 +69,10 @@ $(document).ready(function() {
         loadRpt();
     });
 
+    // autosave when change
     $('.dropdownDepart,.dropdownGroup,.inputdateqty').change(function(event) {
-        // loop value inputqty
-        $('input[name^="mat_qty"]').each(function() {
-            // check value inputqty
-            if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
-                // console.log($(this).val());
-                
-                saveToTemp(function(){
-                    isedit=false;
-                });
-            }
+        saveToTemp(function(){
+            isedit=false;
         });
         var ddval = $('.inputdateqty').val();
         chkval(ddval);
@@ -557,13 +550,18 @@ function filterTableAndInput(){
             saveToTemp(function(){
                         // location.reload();
                         // resetForm();
-                        resetDepart();
+
+                        // when dropdown change
+                        // event autosave will perform
+                        // resetDepart(); 
             });
         });
 }
 
 function saveToTemp(callb){
+     // loop value inputqty
     $('input[name^="mat_qty"]').each(function() {
+        // check value inputqty
         if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
             isedit = true;
             // $(this).css('background-color','red');

@@ -3,7 +3,7 @@ include 'script/conn.php';
 $g = $_GET;
 
 $sql = 'SELECT [MAT_GROUP],[MAT_GROUP_NAME] 
-FROM [SKS_WEB].[dbo].[MATERIAL_GROUP]';
+FROM [MATERIAL_GROUP]';
 
 $sqlDepart = $conn->query($sql);
 

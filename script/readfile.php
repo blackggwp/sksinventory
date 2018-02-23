@@ -89,7 +89,7 @@ function readExcel ($file,$connect,$plant){
        while(($xlSheet1->Cells->Item($i,1)->value != '') OR ($xlSheet1->Cells->Item($i+10,1)->value != ''))
 
         {
-            $strSQL .= " INSERT INTO [SKS_WEB].[dbo].[tupload]( Material_ID, MatDescTh, PostDate, DocID, STO_ID, MOV_TYPE, QTY, UNIT, VENDOR,PLANT)
+            $strSQL .= " INSERT INTO [tupload]( Material_ID, MatDescTh, PostDate, DocID, STO_ID, MOV_TYPE, QTY, UNIT, VENDOR,PLANT)
             VALUES ('".$xlSheet1->Cells->Item($i,1)."'".","."'".iconv('tis-620', 'UTF-8', $xlSheet1->Cells->Item($i,5))."'".","
                 ."'".$xlSheet1->Cells->Item($i,8)."'".","."'".$xlSheet1->Cells->Item($i,9)."'".","
                 ."'".$xlSheet1->Cells->Item($i,11)."'".","."'".$xlSheet1->Cells->Item($i,13)."'".","

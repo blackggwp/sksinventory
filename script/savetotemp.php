@@ -45,7 +45,7 @@ if ($keytype == 'waste'){
 
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 		if ($mat_qtys[$i] != '') {
-			$sql = "INSERT INTO SKS_WEB.dbo.matmgdb 
+			$sql = "INSERT INTO matmgdb 
 		([MAT_CODE],[LOSS_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE])
 		VALUES (
 			'".$mat_codes[$i]."'
@@ -72,7 +72,7 @@ if ($keytype == 'waste'){
 else {
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 			if ($mat_qtys[$i] != '') {
-		$sql = "INSERT INTO SKS_WEB.dbo.matmgdb 
+		$sql = "INSERT INTO matmgdb 
 		([MAT_CODE],[ENDING_QTY],[BEGINING_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE])
 		VALUES (
 			'".$mat_codes[$i]."'
