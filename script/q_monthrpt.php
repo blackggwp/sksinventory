@@ -64,11 +64,12 @@ $sql =" DROP table txm; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql
 ";
 $tempTable = $conn->query($sql);
 
-$sql2 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$cost FROM txm RIGHT OUTER JOIN
-    matmg_pur INNER JOIN
-	matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON txm.MATERIAL = matmg_pur.MAT_CODE LEFT OUTER JOIN
-	matmgdb ON matmg_pur.MAT_CODE = matmgdb.MAT_CODE
-GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_inventory.UNIT_CODE,matmgdb.PLANT 
+$sql2 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, matmg_pur.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$cost 
+FROM txm RIGHT OUTER JOIN
+matmg_pur ON txm.MATERIAL = matmg_pur.MAT_CODE LEFT OUTER JOIN
+matmgdb ON matmg_pur.MAT_CODE = matmgdb.MAT_CODE
+
+GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT 
 HAVING $h
 ";
 // echo $sql2;
@@ -81,7 +82,7 @@ $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
 
 $dx=array();
-// $dx["debugSQL"] = $sql2;
+$dx["debugSQL"] = $sql2;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
