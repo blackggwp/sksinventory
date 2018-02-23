@@ -4,11 +4,11 @@
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="menu">
-			<a class="rptbtn weekrptbtn btn" href="#">รายงานคงเหลือรายสัปดาห์</a>
-			<a class="rptbtn monthrptbtn btn" href="#">รายงานคงเหลือรายเดือน</a>
-			<a class="rptbtn wasterptbtn btn" href="#">รายงานสูญเสีย</a>
-			<!-- <a class="rptbtn  sumweekrptbtn btn" href="#">Sum By Week</a> -->
-			<!-- <a class="rptbtn  summonthrptbtn btn" href="#">Sum By Month</a> -->
+			<a class="rptbtn weekrptbtn btn" >รายงานคงเหลือรายสัปดาห์</a>
+			<a class="rptbtn monthrptbtn btn" >รายงานคงเหลือรายเดือน</a>
+			<a class="rptbtn wasterptbtn btn" >รายงานสูญเสีย</a>
+			<!-- <a class="rptbtn  sumweekrptbtn btn" >Sum By Week</a> -->
+			<!-- <a class="rptbtn  summonthrptbtn btn" >Sum By Month</a> -->
 		</div>
 	</div>
 </div>

@@ -3,7 +3,7 @@
  <form action="./script/readfile.php" class="frmupload" method="post" enctype="multipart/form-data">
     <input type="file" name="fileToUpload" id="fileToUpload">
     <input  class="uploadbtn btn" type="submit" value="Upload File" name="uploadSubmit">
-    <!-- <a class="menubtn uploadbtn btn" type="submit" name="uploadSubmit" href="#">Upload</a>  -->
+    <!-- <a class="menubtn uploadbtn btn" type="submit" name="uploadSubmit" >Upload</a>  -->
  </form> 
 
 

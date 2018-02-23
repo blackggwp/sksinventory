@@ -43,8 +43,8 @@ $totals .= "REPLACE(CAST($total AS numeric(18,1)),'.00','') AS Total";
 $use = "CONVERT(nvarchar,$total - ISNULL(dbo.matmgdb.LOSS_QTY,0)) AS Used";
 
 $useperday = "CONVERT(nvarchar,CAST(($total - CASE WHEN ISNULL(dbo.matmgdb.LOSS_QTY, 0) <= 0 THEN 0 END )  / 7 AS numeric(18,1)))  AS UsePerDay";
-$cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.LOSS_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.price))) AS Cost";
-$cost2 = "CONVERT(NVARCHAR,(CONVERT(numeric(18,1),matmg_pur.PRICE * ($total)))) as cost";
+$cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.LOSS_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE))) AS Cost";
+$cost2 = "CONVERT(NVARCHAR,(CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE * ($total)))) as cost";
 
 $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($dateend)).'</strong>'.'</h3>';
 echo "$dateHeader";
@@ -83,21 +83,19 @@ PIVOT
 // echo "$sql"."</br>";
 $results1 = $conn->query($sql);
 
-$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit, $cost2
+$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit, $cost2
 
 FROM matmgdb RIGHT OUTER JOIN
     txwes RIGHT OUTER JOIN
-    matmg_pur INNER JOIN
-    matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON txwes.MATERIAL = matmg_pur.MAT_CODE ON 
-    matmgdb.MAT_CODE = matmg_pur.MAT_CODE
+	matmg_pur ON txwes.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
 
 WHERE $filterDate
-GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
+GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h
 
 ";
-// echo "$sql3";
+// echo $sql3;
 $results = $conn->query($sql3);
 $table = printtable($results);
 echo $table;

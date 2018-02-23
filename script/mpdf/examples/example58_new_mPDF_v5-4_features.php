@@ -246,7 +246,7 @@ table.zebra tbody tr:nth-child(2n+1) td:nth-child(1n+0) { background-color: yell
 
 <div class="gradient text">
 <p><span class="css">border</span> can now be defined on in-line elements eg SPAN</p>
-<ul><li style="font-family: arial;">Cum sociis natoque <u class="doubleu">penatibus</u> et <a class="reddashed" href="#">magnis dis parturient</a> montes</li></ul>
+<ul><li style="font-family: arial;">Cum sociis natoque <u class="doubleu">penatibus</u> et <a class="reddashed" >magnis dis parturient</a> montes</li></ul>
 <p><b>Note:</b> Remember that in mPDF, inside table cells, properties set on block elements are set when possible as in-line properties - so a P element inside a table with border set, will appear with a border around the text line as though it had been set on SPAN </p>
 </div>
 

@@ -14,12 +14,12 @@ $d = $dateqty;
 
 if (($plant != '') && ($depart != '')) {
     $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE
-    FROM matmg_inventory ";
+    FROM matmg_pur ";
   if ($depart != 'all') {
-    $sql .= " WHERE ([matmg_inventory].MAT_DEPART = '".$depart."') ";
+    $sql .= " WHERE ([matmg_pur].MAT_DEPART = '".$depart."') ";
   }
-  $sql .= " ORDER BY  dbo.matmg_inventory.MAT_CODE ";
-//   echo "$sql";
+  $sql .= " ORDER BY  dbo.matmg_pur.MAT_CODE ";
+//   echo $sql;
   $results = $conn->query($sql);
 }
 

@@ -43,20 +43,19 @@ $use = "CONVERT(numeric(18,1),$total - ISNULL(dbo.matmgdb.ENDING_QTY,0)  ) AS Us
 // $useperday = "CONVERT(nvarchar,CAST(($total - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END )  / 7 AS numeric(18,1)))  AS UsePerDay";
 $useperday = "CONVERT(nvarchar,ROUND((($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  / 7),1)) AS UsePerDay";
 
-// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.price))) AS Cost";
-$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  * matmg_pur.price) AS Cost";
+// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE))) AS Cost";
+$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  * matmg_pur.UNIT_PRICE) AS Cost";
 
 
 $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($dateend)).'</strong>'.'</h3>';
 
 // $exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
 
-$sql ="
-		DROP table txm; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txm
-                                    FROM (SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
-                                                            FROM          tgrheader LEFT OUTER JOIN
-                      tgritems ON tgrheader.MAT_DOC = tgritems.MAT_DOC
-                                                            WHERE (tgritems.MOVE_TYPE = '101')  AND (tgritems.PLANT = '$plant')
+$sql =" DROP table txm; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txm
+    FROM ( SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
+    FROM tgrheader LEFT OUTER JOIN
+    tgritems ON tgrheader.MAT_DOC = tgritems.MAT_DOC
+    WHERE (tgritems.MOVE_TYPE = '101')  AND (tgritems.PLANT = '$plant')
 ) s
  PIVOT (
  	MAX(QTY)
@@ -65,14 +64,11 @@ $sql ="
 ";
 $tempTable = $conn->query($sql);
 
-$sql2 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
-
-FROM txm RIGHT OUTER JOIN
+$sql2 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$cost FROM txm RIGHT OUTER JOIN
     matmg_pur INNER JOIN
 	matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON txm.MATERIAL = matmg_pur.MAT_CODE LEFT OUTER JOIN
 	matmgdb ON matmg_pur.MAT_CODE = matmgdb.MAT_CODE
-GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
-
+GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_inventory.UNIT_CODE,matmgdb.PLANT 
 HAVING $h
 ";
 // echo $sql2;

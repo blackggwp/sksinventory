@@ -1,30 +1,30 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="#">
+                    <a >
                         Start Bootstrap
                     </a>
                 </li>
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a >Dashboard</a>
                 </li>
                 <li>
-                    <a href="#">Shortcuts</a>
+                    <a >Shortcuts</a>
                 </li>
                 <li>
-                    <a href="#">Overview</a>
+                    <a >Overview</a>
                 </li>
                 <li>
-                    <a href="#">Events</a>
+                    <a >Events</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a >About</a>
                 </li>
                 <li>
-                    <a href="#">Services</a>
+                    <a >Services</a>
                 </li>
                 <li>
-                    <a href="#">Contact</a>
+                    <a >Contact</a>
                 </li>
             </ul>
         </div>

@@ -361,8 +361,9 @@ function senddateToWeek(){
     var date = $('#frmrpt').serialize();
         
         $.ajax({url: "./script/q_weekrpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            // console.log(r);
+            console.log(r);
             var dx = JSON.parse(r);
+            // var dx = JSON.parse(JSON.stringify(r));
             tbldata = (dx['res']);
 
         //   var arr = ['Beg', 'Code', 'Name'];

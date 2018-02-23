@@ -57,38 +57,11 @@ $use = "CONVERT(nvarchar,$total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) AS Used";
 // $useperday = "CONVERT(nvarchar,CAST(($total - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END )  / 7 AS numeric(18,1)))  AS UsePerDay";
 $useperday = "CONVERT(nvarchar,ROUND((($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  / 7),1)) AS UsePerDay";
 
-// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.price))) AS Cost";
-$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) * matmg_pur.price) as Cost";
+// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE))) AS Cost";
+$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) * matmg_pur.UNIT_PRICE) as Cost";
 
 // $rptHeader = '<h3>Week Report</h3></br>';
 $dateHeader =  '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($firstday)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($endday)).'</strong>'.'</h3>';
-// echo $rptHeader;
-// echo $dateHeader;
-// echo '<form method ="POST" name="exportPDF" action="script/exportPDF.php">';
-// $ajdata = $table;
-// echo '<input type="submit" name="exportPDF" value="'.$ajdata.'">';
-
-// $exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
-// echo "</form>";
-
-// $sql ="drop table txw;
-
-// SELECT [MATERIAL],$datesql into txw
-// FROM
-// (
-// 	SELECT [Posting Date] as D, REPLACE([Qty in Un# of Entry],'.0',' ') as QTY,[MATERIAL]
-// 	FROM tstolog
-// 	WHERE [Movement Type] = '101'
-// 	AND (dbo.tstolog.Plant = '$plant')
-// 	) s
-// PIVOT
-// (
-// 	MAX(QTY)
-// 	FOR D IN ($datesql)
-// 	) t
-// ";
-
-// $results1 = $conn->query($sql);
 
 $sql1 ="
 		DROP table txw; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txw
@@ -104,14 +77,14 @@ $sql1 ="
 ";
 $tempTable = $conn->query($sql1);
 
-$sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name , matmg_inventory.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
+$sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name , matmg_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$cost
 
- FROM matmgdb RIGHT OUTER JOIN
- matmg_pur INNER JOIN
- matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
- txw ON matmg_pur.MAT_CODE = txw.MATERIAL
+ FROM  matmgdb RIGHT OUTER JOIN
+    matmg_pur ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
+    txw ON matmg_pur.MAT_CODE = txw.MATERIAL
 
-GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
+
+GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h) AS t1 LEFT OUTER JOIN
                       matmgdb AS matmgdb_1 ON matmgdb_1.MAT_CODE = t1.Code 
