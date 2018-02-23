@@ -51,23 +51,6 @@ $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'<
 
 // $exportPDFLink = '<a class="exportPDF">ExportPDF</a>';
 
-// $sql ="drop table txm;
-
-// SELECT [MATERIAL],$datesql into txm
-// FROM
-// (
-// 	SELECT [Posting Date] as D, REPLACE([Qty in Un# of Entry],'.0',' ') as QTY,[MATERIAL]
-// 	FROM tstolog
-// 	WHERE [Movement Type] = '101'
-// 	AND (dbo.tstolog.Plant = '$plant')
-// 	) s
-// PIVOT
-// (
-// 	MAX(QTY)
-// 	FOR D IN ($datesql)
-// 	) t
-// ";
-
 $sql ="
 		DROP table txm; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txm
                                     FROM (SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
@@ -82,18 +65,15 @@ $sql ="
 ";
 $tempTable = $conn->query($sql);
 
-$sql2 = "SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
+$sql2 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit , matmgdb.BEGINING_QTY as Beg ,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit,$cost
 
-FROM         matmg_inventory INNER JOIN
-MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE LEFT OUTER JOIN
-matmg_pur ON MATERIAL_MASTER.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-txm ON MATERIAL_MASTER.MAT_CODE = txm.MATERIAL LEFT OUTER JOIN
-matmgdb ON MATERIAL_MASTER.MAT_CODE = matmgdb.MAT_CODE
-WHERE     (MATERIAL_MASTER.PLANT = '$plant') 
-GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
+FROM txm RIGHT OUTER JOIN
+    matmg_pur INNER JOIN
+	matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON txm.MATERIAL = matmg_pur.MAT_CODE LEFT OUTER JOIN
+	matmgdb ON matmg_pur.MAT_CODE = matmgdb.MAT_CODE
+GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h
-
 ";
 // echo $sql2;
 $results = $conn->query($sql2);
@@ -105,7 +85,7 @@ $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
 
 $dx=array();
-
+// $dx["debugSQL"] = $sql2;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);

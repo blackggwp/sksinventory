@@ -7183,8 +7183,6 @@ tfoot {
 /* On mouse-over, add a deeper shadow */
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-.summonthrptbtn{
-}
 .txtKeyType {
   text-align: center;
 }
@@ -7239,6 +7237,6 @@ tfoot {
   width: 100%;
   cursor: pointer;
 }
-.dropdownDepart {
+.dropdownDepart,.datestart {
   cursor: pointer;
 }

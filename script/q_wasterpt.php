@@ -28,7 +28,7 @@ for ($i=$datestart; $i <=$dateend  ; $i++) {
 	$h = substr($h, 0,-4);
 
 $filterLoss = ' OR (CAST(matmgdb.LOSS_QTY AS nvarchar) <> \'NULL\')';
-$filterDate = ' AND (matmgdb.SAVED_DATE BETWEEN \''.$datestart.'\' AND \''.$dateend.'\')';
+$filterDate = ' (matmgdb.SAVED_DATE BETWEEN \''.$datestart.'\' AND \''.$dateend.'\')';
 $filterPlant = " AND (matmgdb.PLANT = '$plant')";
 $h = $h.$filterPlant;           
 
@@ -83,29 +83,16 @@ PIVOT
 // echo "$sql"."</br>";
 $results1 = $conn->query($sql);
 
+$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit, $cost2
 
-// $sql2 ="SELECT [MAT_DEPART],[MAT_CODE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[LOSS_QTY],CONVERT(nvarchar, [SAVED_DATE], 103) AS SaveDate
-// 		FROM [SKS_WEB].[dbo].[matmgdb]
-// 		WHERE (CAST(LOSS_QTY AS NVARCHAR) <> 'NULL')
-// 		AND ([PLANT] = '$plant')
-// 		AND ([SAVED_DATE] between '$datestart' and '$dateend')
-//   		";
+FROM matmgdb RIGHT OUTER JOIN
+    txwes RIGHT OUTER JOIN
+    matmg_pur INNER JOIN
+    matmg_inventory ON matmg_pur.MAT_CODE = matmg_inventory.MAT_CODE ON txwes.MATERIAL = matmg_pur.MAT_CODE ON 
+    matmgdb.MAT_CODE = matmg_pur.MAT_CODE
 
-// $sql3 = "SELECT     matmgdb.MAT_DEPART as dep, matmgdb.MAT_CODE AS mat, matmgdb.MAT_T_DESC as Des, matmgdb.UNIT_CODE as unit,$datesql2,$totals, CONVERT(numeric(18,1),matmg_pur.PRICE) as CostPerUnit,$cost2
-// FROM         matmgdb LEFT OUTER JOIN
-//                       matmg_pur ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-//                       txwes ON matmgdb.MAT_CODE = txwes.MAT_CODE
-//                       WHERE (matmgdb.PLANT = '$plant') AND $w";
-
-$sql3 = "SELECT DISTINCT MATERIAL_MASTER.MAT_CODE as Code,matmg_inventory.MAT_DEPART as Dep, matmg_inventory.MAT_T_DESC as Name, matmg_inventory.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.price AS numeric(18,1)) as costPerUnit, $cost2
-
-FROM matmg_inventory INNER JOIN
-MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE LEFT OUTER JOIN
-matmg_pur ON MATERIAL_MASTER.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-txwes ON MATERIAL_MASTER.MAT_CODE = txwes.MATERIAL LEFT OUTER JOIN
-matmgdb ON MATERIAL_MASTER.MAT_CODE = matmgdb.MAT_CODE
-WHERE     (MATERIAL_MASTER.PLANT = '$plant') $filterDate
-GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
+WHERE $filterDate
+GROUP BY matmg_pur.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.price, matmg_inventory.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h
 
