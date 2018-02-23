@@ -1,9 +1,9 @@
 <?php
 date_default_timezone_set('Asia/Bangkok');
-$hostname = '192.168.0.205\APPWEBPRD';
+$hostname = '192.168.0.251';
 $username = 'sa';
-$password = 'P@ssw0rd';
-$database = 'SKS_WEB';
+$password = '88888888pP';
+$database = 'matmg';
 
 	// $dsn = "odbc:DRIVER={SQL Server};SERVER=$hostname;DATABASE=$database;charset=UTF-8";
 	// $connectionInfo = array( "Database"=>$database, "CharacterSet" =>"UTF-8"); 
@@ -12,9 +12,6 @@ try {
 
 	// $conn = sqlsrv_connect( $hostname, $connectionInfo);
 	$conn = new PDO("sqlsrv:server=$hostname;Database = $database;", $username, $password);
-   
-
-
 
 	// $conn->setAttribute(PDO::SQLSRV_ATTR_ENCODING, PDO::SQLSRV_ENCODING_UTF8);
 	// $conn = mssql_connect('192.168.0.235','sa','sukishi20272027');

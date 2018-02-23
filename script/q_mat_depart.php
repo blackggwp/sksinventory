@@ -13,17 +13,13 @@ $m = $dateqty;
 $d = $dateqty;
 
 if (($plant != '') && ($depart != '')) {
-    $sql = "SELECT DISTINCT matmg_inventory.MAT_CODE, matmg_inventory.MAT_T_DESC, matmg_inventory.MAT_DEPART, matmg_inventory.UNIT_CODE
-FROM         matmg_inventory LEFT OUTER JOIN
-                      MATERIAL_MASTER ON matmg_inventory.MAT_CODE = MATERIAL_MASTER.MAT_CODE
-  WHERE 
-  (dbo.MATERIAL_MASTER.PLANT  = '".$plant."') ";
+    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE
+    FROM matmg_inventory ";
   if ($depart != 'all') {
-    $sql .= " AND ([matmg_inventory].MAT_DEPART = '".$depart."') ";
+    $sql .= " WHERE ([matmg_inventory].MAT_DEPART = '".$depart."') ";
   }
-
   $sql .= " ORDER BY  dbo.matmg_inventory.MAT_CODE ";
-  // echo "$sql";
+//   echo "$sql";
   $results = $conn->query($sql);
 }
 

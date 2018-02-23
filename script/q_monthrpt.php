@@ -95,6 +95,7 @@ GROUP BY MATERIAL_MASTER.MAT_CODE,matmg_inventory.MAT_DEPART,matmg_inventory.MAT
 HAVING $h
 
 ";
+// echo $sql2;
 $results = $conn->query($sql2);
 $results2 = $results;
 $results2 = $conn->query($sql2);
