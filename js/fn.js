@@ -340,19 +340,60 @@ function checkDate(){
 function senddateToWaste(){
     var date = $('#frmrpt').serialize();
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            var tbldata = r;
-            $('.result').html(tbldata);
+            // var tbldata = r;
+            // console.log(r);
+            var dx = JSON.parse(r);
+            // var dx = JSON.parse(JSON.stringify(r));
+            tbldata = (dx['res']);
+            
             // $('.exportPDF').click(function(event) {
             //     exportPDFFunc(tbldata);
             // });
-            var table = $('.tblreport').DataTable({
-                paging: false,
-                "searching": false,
-                dom: 'Bfrtip',
-                buttons: [
-                    'excel'
-                ]
+
+            // datatable API
+            // var table = $('.tblreport').DataTable({
+            //     paging: false,
+            //     "searching": false,
+            //     dom: 'Bfrtip',
+            //     buttons: [
+            //         'excel'
+            //     ]
+            // });
+
+            $('#tblreport').dxDataGrid({ ////Devexpress
+                selection: {
+                    mode: "multiple"
+                },
+                "export": {
+                    enabled: true,
+                    fileName: "matmg",
+                    allowExportSelectedData: true
+                },
+                dataSource:dx['res'],
+                paging:false,
+                allowColumnResizing:true,
+                groupPanel: {
+                    visible: true
+                },
+                searchPanel: {
+                    visible: true,
+                    width: 240,
+                    placeholder: "Search..."
+                },
+                columns: 
+                    dx['colName']
+                ,
+                summary: {
+                    groupItems: [{
+                        column: "Cost",
+                        summaryType: "sum",
+                        valueFormat: "Numeric",
+                        displayFormat: "{0}",
+                        showInGroupFooter: true
+                    }]
+                }
             });
+            $('.result').html(dx['html']);
             }
         });
 }
@@ -490,23 +531,23 @@ function loaddepart($t){
 
 function filterTableAndInput(){
     // Apply the filter
-            $(".example thead input").on( 'keyup change', function () {
-                table
-                .column( $(this).parent().index()+':visible' )
-                .search( this.value )
-                .draw();
+            // $(".example thead input").on( 'keyup change', function () {
+            //     table
+            //     .column( $(this).parent().index()+':visible' )
+            //     .search( this.value )
+            //     .draw();
                 
-            } );
+            // } );
 
         // DataTable
-        var table = $('.example').DataTable({
-            paging:         false,
-            "searching": false,
-            dom: 'Bfrtip',
-            buttons: [
-                'excel'
-            ]
-        });
+        // var table = $('.example').DataTable({
+        //     paging:         false,
+        //     "searching": false,
+        //     dom: 'Bfrtip',
+        //     buttons: [
+        //         'excel'
+        //     ]
+        // });
 
         $(".example .inputqty").keydown(function (e) {
             // isedit = true;
@@ -518,8 +559,8 @@ function filterTableAndInput(){
             if (e.keyCode == 13) { //Enter press for next input
                 try{
                     // disable export button when enter press
-                    var table = $('.example').DataTable();
-                    table.buttons().disable();
+                    // var table = $('.example').DataTable();
+                    // table.buttons().disable();
 
                     var $inputMatQty = $(this).parent().parent().next().find('.inputqty').focus().select();
                     // var $inputMatQty = $(this).parent().parent().next().find('.inputqty').css("background-color", "yellow");

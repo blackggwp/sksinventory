@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href="./index.php">หน้าหลัก</a>
-			<a class="rptnav navbar-brand" >รายงาน</a>
+			<a class="rptnav navbar-brand" href="#">รายงาน</a>
 		</div>
 	</div>
 </nav>

@@ -80,9 +80,10 @@ $results2->execute();
 $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
 
+require '../helperfunc.php';
 
 $dx=array();
-$dx["debugSQL"] = $sql2;
+// $dx["debugSQL"] = $sql2;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
@@ -95,21 +96,6 @@ exit;
 // $table = printtable($results);
 
 // echo $table;
-function getColName($results){
-	$a=array();
-	$tcolumn = $results->columnCount();
-	for ($counter = 0; $counter < $tcolumn; $counter ++) {
-		$meta = $results->getColumnMeta($counter);
-		$colName .= '"'.$meta['name'].'"'.',';
-		if ($meta['name'] == 'Dep') { //Chk Dep For group
-			$a[]=array('dataField'=>$meta['name'],'groupIndex'=>0);
-		}
-		else{
-		   $a[]=$meta['name'];
-		}
-	}
-	return $a;
-}
 function printtable($results){
 
 	$tcolumn = $results->columnCount();

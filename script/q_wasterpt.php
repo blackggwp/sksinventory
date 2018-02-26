@@ -47,7 +47,7 @@ $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo
 $cost2 = "CONVERT(NVARCHAR,(CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE * ($total)))) as cost";
 
 $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($dateend)).'</strong>'.'</h3>';
-echo "$dateHeader";
+// echo "$dateHeader";
 
 // echo '<a class="exportPDF">ExportPDF</a>';
 
@@ -96,9 +96,28 @@ HAVING $h
 
 ";
 // echo $sql3;
+// $results = $conn->query($sql3);
+// $table = printtable($results);
+// echo $table;
+
 $results = $conn->query($sql3);
-$table = printtable($results);
-echo $table;
+$results2 = $results;
+$results2 = $conn->query($sql3);
+$results2->execute();
+$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+
+require '../helperfunc.php';
+
+$dx=array();
+// $dx["debugSQL"] = $sql3;
+$dx["html"] = $dateHeader.$exportPDFLink;
+$dx["res"]    = $results2;
+$dx["colName"] = getColName($results);
+
+// echo $dx["colName"];
+$json=json_encode($dx);
+echo $json;
+exit;
 
 function printtable($results){
 
