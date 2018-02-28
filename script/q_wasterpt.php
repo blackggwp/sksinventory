@@ -109,7 +109,7 @@ $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 require '../helperfunc.php';
 
 $dx=array();
-// $dx["debugSQL"] = $sql3;
+$dx["debugSQL"] = $sql3;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
@@ -118,39 +118,6 @@ $dx["colName"] = getColName($results);
 $json=json_encode($dx);
 echo $json;
 exit;
-
-function printtable($results){
-
-	$tcolumn = $results->columnCount();
-
-	$h='';
-	$cols=array();
-	for ($counter = 0; $counter < $tcolumn; $counter ++) {
-		$meta = $results->getColumnMeta($counter);
-		// $utf8 = iconv("tis-620", "utf-8", $meta['name'] );
-		$h.='<th style="font-size:1em;">'.$meta['name'].'</th>';
-
-	}   
-
-	$r='';
-	foreach ($results as $dr) {
-
-		$r.='<tr>';
-		for ($i = 0; $i < $tcolumn; $i ++) {
-			$val=str_replace(".00","",$dr[$i]);
-
-			$r.='<td>'.$val.'</td>';
-		}
-		$r.='</tr>';
-	}
-
-	$h='<thead>'.$h.'</thead>';
-	$s.='<table class="tblreport table table-hover">'.$h.$r;
-	$s.='</table>';
-
-	return $s;
-
-}
 
 return;
 

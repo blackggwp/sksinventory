@@ -341,9 +341,8 @@ function senddateToWaste(){
     var date = $('#frmrpt').serialize();
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
             // var tbldata = r;
-            // console.log(r);
             var dx = JSON.parse(r);
-            // var dx = JSON.parse(JSON.stringify(r));
+            // console.log(r);
             tbldata = (dx['res']);
             
             // $('.exportPDF').click(function(event) {
