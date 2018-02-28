@@ -21,7 +21,8 @@ for ($i=$datestart; $i <=$dateend  ; $i++) {
 	$d = substr($d, 0,-1);
 	$d3 .= 'CONVERT(nvarchar,CAST('.$d.' AS numeric(18,1))) AS '.'D'.$d2.',';
 	
-	$h .= '(sum(cast(['.$i.'] as float)) > 0) OR ';
+	// remove condition for provide -sign
+	// $h .= '(sum(cast(['.$i.'] as float)) > 0) OR ';
 	$total .= "CAST(ISNULL(dbo.txwes.[$i],0) AS float)+";
 	$w .= "($d <> 'NULL') OR";
 }
@@ -29,7 +30,7 @@ for ($i=$datestart; $i <=$dateend  ; $i++) {
 
 $filterLoss = ' OR (CAST(matmgdb.LOSS_QTY AS nvarchar) <> \'NULL\')';
 $filterDate = ' (matmgdb.SAVED_DATE BETWEEN \''.$datestart.'\' AND \''.$dateend.'\')';
-$filterPlant = " AND (matmgdb.PLANT = '$plant')";
+$filterPlant = " (matmgdb.PLANT = '$plant')";
 $h = $h.$filterPlant;           
 
 $datesql = substr($dd, 0,-1);

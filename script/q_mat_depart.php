@@ -57,7 +57,7 @@ if (($plant != '') && ($depart != '')) {
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">
                 <input type="hidden" name="unitprice[]" value="'.$res[UNIT_PRICE].'"></td>';
-                    echo '<td class="tdqty"> <input class="inputqty form-control" type="text" min="0" 
+                    echo '<td class="tdqty"> <input class="inputqty form-control" type="text" 
                     name="mat_qty[]"
                      >
                     </td>';                          

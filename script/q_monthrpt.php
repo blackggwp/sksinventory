@@ -22,7 +22,8 @@ for ($i=$datestart; $i <=$dateend  ; $i++) {
 	$d = substr($d, 0,-1);
 	$d3 .= 'CONVERT(nvarchar,CAST('.$d.' AS numeric(18,1))) AS '.'D'.$d2.',';
 	
-	$h .= '(sum(cast(['.$i.'] as float)) > 0) OR ';
+	// remove condition for provide -sign
+	// $h .= '(sum(cast(['.$i.'] as float)) > 0) OR ';
 	$total .= "CAST(ISNULL(dbo.txm.[$i],0) AS float)+";
 }
 	$h = substr($h, 0,-4);

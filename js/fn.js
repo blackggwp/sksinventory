@@ -341,8 +341,8 @@ function senddateToWaste(){
     var date = $('#frmrpt').serialize();
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
             // var tbldata = r;
-            var dx = JSON.parse(r);
             // console.log(r);
+            var dx = JSON.parse(r);
             tbldata = (dx['res']);
             
             // $('.exportPDF').click(function(event) {
@@ -548,14 +548,12 @@ function filterTableAndInput(){
         //     ]
         // });
 
+        // for check duplicate keyPress
+        var oneTimePressKey = {};
         $(".example .inputqty").keydown(function (e) {
-            // isedit = true;
-            // $(this).css('background-color','red');
-            // $(this).addClass('tdischange');
-            // $(this).next().addClass('tdischange');
-            // $(this).parent().parent().addClass('trischange');
-
-            if (e.keyCode == 13) { //Enter press for next input
+            
+            var char = e.keyCode || e.which;
+            if (char == 13) { //Enter press for next input
                 try{
                     // disable export button when enter press
                     // var table = $('.example').DataTable();
@@ -571,20 +569,36 @@ function filterTableAndInput(){
             };
 
             // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            if ($.inArray(char, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
              // Allow: Ctrl+A, Command+A
-             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+             (char === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
              // Allow: Ctrl+F, Command+F
-             (e.keyCode === 70 && (e.ctrlKey === true || e.metaKey === true)) || 
+             (char === 70 && (e.ctrlKey === true || e.metaKey === true)) || 
+             // Allow: Ctrl+R, Command+R
+             (char === 82 && (e.ctrlKey === true || e.metaKey === true)) ||
              // Allow: home, end, left, right, down, up
-             (e.keyCode >= 35 && e.keyCode <= 40)) {
+             (char >= 35 && char <= 40)) {
                  // let it happen, don't do anything
+
+                 // prevent -sign after enter number
+                 if ((char === 109) || (char === 189)) {
+                    e.preventDefault();
+                 }
              return;
             }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
+            // Allow: -(substract sign)
+            else if ((char === 109) || (char === 189)) {
+                // prevent duplicate -sign
+                if (oneTimePressKey[109] === true) {
+                    e.preventDefault();
+                }
+                oneTimePressKey[e.keyCode] = e.type == 'keydown';
             }
+            // Ensure that it is a number and stop the keypress
+            // else if ((e.shiftKey || (char < 48 || char > 57)) && (char < 96 || char > 105)) {
+            //     e.preventDefault();
+            // }
+            
         });
             
         $('.submitdata').click(function(event) {
@@ -763,8 +777,8 @@ function isDatePicker(dpk){
 }
 function isEnterKey(data){
     $( data ).keydown(function (e) {
-
-            if (e.keyCode == 13) { //Enter press for next input
+        var char = e.keyCode || e.which;
+            if (char == 13) { //Enter press for next input
                 try{
                     var $inputMatQty = $(this).next().next().next().focus().select();
                     }
@@ -772,16 +786,16 @@ function isEnterKey(data){
             };
 
             // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            if ($.inArray(char, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
              // Allow: Ctrl+A, Command+A
-             (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+             (char === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
              // Allow: home, end, left, right, down, up
-             (e.keyCode >= 35 && e.keyCode <= 40)) {
+             (char >= 35 && char <= 40)) {
                  // let it happen, don't do anything
              return;
             }
             // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            if ((e.shiftKey || (char < 48 || char > 57)) && (char < 96 || char > 105)) {
             e.preventDefault();
             }
         });
