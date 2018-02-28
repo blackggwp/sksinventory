@@ -23,7 +23,7 @@ for ($i=$datestart; $i <=$dateend  ; $i++) {
 	
 	// remove condition for provide -sign
 	// $h .= '(sum(cast(['.$i.'] as float)) > 0) OR ';
-	$total .= "CAST(ISNULL(dbo.txwes.[$i],0) AS float)+";
+	$total .= "CAST(ISNULL(dbo.temp_cal_waste.[$i],0) AS float)+";
 	$w .= "($d <> 'NULL') OR";
 }
 	$h = substr($h, 0,-4);
@@ -53,42 +53,30 @@ $dateHeader = '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($datestart)).'<
 // echo '<a class="exportPDF">ExportPDF</a>';
 
 
-$sql ="drop table txwes;
+$sql ="drop table temp_cal_waste;
 
-SELECT [MAT_CODE] as MATERIAL,$datesql into txwes
+SELECT [MAT_CODE] as MATERIAL,$datesql into temp_cal_waste
 FROM 
 (
-	SELECT [SAVED_DATE] as D, REPLACE([LOSS_QTY],'.0',' ') as QTY,[MAT_CODE]
-	FROM matmgdb
-	WHERE (dbo.matmgdb.Plant = '$plant')
+	SELECT     SAVED_DATE AS D, SUM(LOSS_QTY) AS sumQTY, MAT_CODE
+FROM         matmgdb
+WHERE     (PLANT = '1032')
+GROUP BY MAT_CODE, SAVED_DATE
 	) s
 PIVOT
 (
-	MAX(QTY)
+	MAX(sumQTY)
 	FOR D IN ($datesql)
 	) t
 ";
-// $sql2 ="
-// 		DROP table txm; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txm
-//                                     FROM (SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
-//                                                             FROM          tgrheader LEFT OUTER JOIN
-//                       tgritems ON tgrheader.MAT_DOC = tgritems.MAT_DOC
-//                                                             WHERE (tgritems.MOVE_TYPE = '101')  AND (tgritems.PLANT = '$plant')
-// ) s
-//  PIVOT (
-//  	MAX(QTY)
-// 	FOR D IN ($datesql)
-// 	) t
-// ";
-
 // echo "$sql"."</br>";
 $results1 = $conn->query($sql);
 
 $sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit, $cost2
 
 FROM matmgdb RIGHT OUTER JOIN
-    txwes RIGHT OUTER JOIN
-	matmg_pur ON txwes.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
+    temp_cal_waste RIGHT OUTER JOIN
+	matmg_pur ON temp_cal_waste.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
 
 WHERE $filterDate
 GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT
@@ -110,7 +98,7 @@ $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 require '../helperfunc.php';
 
 $dx=array();
-$dx["debugSQL"] = $sql3;
+// $dx["debugSQL"] = $sql3;
 $dx["html"] = $dateHeader.$exportPDFLink;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
