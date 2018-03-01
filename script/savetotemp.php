@@ -23,25 +23,7 @@ $unitprice = $g['unitprice'];
 
 if (($keytype == 'ending') || ($keytype == 'waste')) {
 
-// 	$sqlDel=' delete from  matmg  where mat_code in (';
-// 		for ($i=0; $i < count($mat_qtys) ; $i++) {
-// 			$sqlDel.="'".$mat_codes[$i]."',";
-// 		}
-// 		$sqlDel=substr($sqlDel, 0, -1); 
-// 		$sqlDel.=" ) AND SAVED_DATE = '".$dateqty."' ";
-// try {
-// 	$del = $conn->query($sqlDel);
-// } catch (Exception $e) {
-
-// }
-// if ($del) {
-// 	echo "Delete Success";
-// 	echo "$sqlDel";
-// }else {
-// 	echo "Delete Failed";
-// }
-
-if ($keytype == 'waste'){
+	if ($keytype == 'waste'){
 
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 		if ($mat_qtys[$i] != '') {
@@ -64,11 +46,11 @@ if ($keytype == 'waste'){
 
 			$sall .= $sql;
 		}else {
-			echo '!!Please Enter data again';
+			echo '!!Please Enter data again'.'<br>';
 			return;
 		}	
 	}
-}
+	}
 else {
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 			if ($mat_qtys[$i] != '') {
@@ -92,7 +74,7 @@ else {
 
 $sall .= $sql;
 			}else {
-			echo '!!Please Enter data again';
+			echo '!!Please Enter data again !';
 			return;
 			}
 	}

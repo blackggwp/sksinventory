@@ -71,12 +71,20 @@ $(document).ready(function() {
 
     // autosave when change
     $('.dropdownDepart,.dropdownGroup,.inputdateqty').change(function(event) {
-        saveToTemp(function(){
-            isedit=false;
+            // loop value inputqty
+        $('input[name^="mat_qty"]').each(function() {
+            // check value inputqty
+            if ($.inArray($(this).val(), ['', '0', 0]) == -1) {
+                isedit = true;
+            }
         });
+
+        if (isedit) {
+            saveToTemp(resetForm);
+        }
         var ddval = $('.inputdateqty').val();
-        chkval(ddval);
-        loaddepart($(this));
+            chkval(ddval);
+            loaddepart($(this));
     });
 
 
@@ -341,7 +349,7 @@ function senddateToWaste(){
     var date = $('#frmrpt').serialize();
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
             // var tbldata = r;
-            // console.log(r);
+            console.log(r);
             var dx = JSON.parse(r);
             tbldata = (dx['res']);
             
@@ -591,29 +599,28 @@ function filterTableAndInput(){
                 // prevent duplicate -sign
                 if (oneTimePressKey[109] === true) {
                     e.preventDefault();
-                }
+                } else if (oneTimePressKey[189] === true) {
+                    e.preventDefault();
+                } else {oneTimePressKey[e.keyCode] = ''}
                 oneTimePressKey[e.keyCode] = e.type == 'keydown';
             }
             // Ensure that it is a number and stop the keypress
-            // else if ((e.shiftKey || (char < 48 || char > 57)) && (char < 96 || char > 105)) {
-            //     e.preventDefault();
-            // }
+            else if ((e.shiftKey || (char < 48 || char > 57)) && (char < 96 || char > 105)) {
+                e.preventDefault();
+            }
             
         });
             
         $('.submitdata').click(function(event) {
-            saveToTemp(function(){
-                        // location.reload();
-                        // resetForm();
-
-                        // when dropdown change
-                        // event autosave will perform
-                        // resetDepart(); 
-            });
+            // window.alert('isedit = '+isedit);
+            saveToTemp(resetForm);
+                // isedit=false;
+                // location.reload();
+                // resetDepart(); 
         });
 }
 
-function saveToTemp(callb){
+function saveToTemp(callb, event){
      // loop value inputqty
     $('input[name^="mat_qty"]').each(function() {
         // check value inputqty
@@ -625,28 +632,32 @@ function saveToTemp(callb){
             $(this).parent().parent().addClass('trischange');
         }
     });
+    // window.alert('isedit in savetotemp func = '+isedit);
     if(!isedit){
         callb();
     }
-    var isfound=false;
-    var $g=$('.tdqty:not(.tdischange)');
-
-    var val='';
+    
+    // var isfound=false;
+    // var $g=$('.tdqty:not(.tdischange)');
+    // var val='';
+    // window.alert('isfound in savetotemp func = '+isfound);
+    // if(!isfound){
+        // callb();
+    // }
 
     $('.inputqty:not(.tdischange)').remove();
     $('.trqty:not(.trischange)').remove();
-      
-    if(!isfound){
-        callb();
-    }
+
+    
     var $dateqty   = $('.inputdateqty').val();
     var d = $('.form_data').serialize();
-
+    // console.log(d);
     if (d != '') {
         $.ajax({url: "./script/savetotemp.php",data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant + '&dateqty='+$dateqty + '&keytype='+keyType, success: function(r){
         // alert(r);
         console.log(r);
         callb();
+        isedit = false;
             }
         });
     };
@@ -707,7 +718,9 @@ function remsg(callb){
 }
 
 function resetForm() {
-    $('.example input[type="number"]').val('');
+    // $('.example input[type="number"]').val('');
+    // window.alert('resetForm func exec');
+    document.getElementById("form_inputqty").reset();
 }
 
 function resetDepart() {

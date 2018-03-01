@@ -30,7 +30,7 @@ if (($plant != '') && ($depart != '')) {
 
 </div> <!-- Submit Btn-->
 
-<form method="post" class="form_data" name="form_data">
+<form method="post" id="form_inputqty" class="form_data" name="form_data">
 
     <table class="example table table-striped table-hover">
         <thead>
@@ -52,7 +52,7 @@ if (($plant != '') && ($depart != '')) {
                     <td>'.$res[MAT_T_DESC].'
                         <input type="hidden" name="mattdesc[]" value="'.$res[MAT_T_DESC].'">
                         <input type="hidden" name="mat_code[]" value="'.$res[MAT_CODE].'">
-                        <input type="hidden" name="mat_depart[]" value="'.$depart.'">
+                        <input type="hidden" name="mat_depart[]" value="'.$res[MAT_DEPART].'">
                     </td>';
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">

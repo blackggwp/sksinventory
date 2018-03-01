@@ -60,7 +60,7 @@ FROM
 (
 	SELECT     SAVED_DATE AS D, SUM(LOSS_QTY) AS sumQTY, MAT_CODE
 FROM         matmgdb
-WHERE     (PLANT = '1032')
+WHERE     (PLANT = '$plant')
 GROUP BY MAT_CODE, SAVED_DATE
 	) s
 PIVOT
