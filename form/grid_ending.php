@@ -1,12 +1,6 @@
 <?
 include 'script/conn.php';
 $g = $_GET;
-
-$sql = 'SELECT [MAT_GROUP],[MAT_GROUP_NAME] 
-FROM [MATERIAL_GROUP]';
-
-$sqlDepart = $conn->query($sql);
-
 ?>
 <html>
 <head>

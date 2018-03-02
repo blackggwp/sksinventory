@@ -7237,6 +7237,6 @@ tfoot {
   width: 100%;
   cursor: pointer;
 }
-.dropdownDepart,.datestart {
+.datestart, .dropdownDepart, .dropdownReason {
   cursor: pointer;
 }

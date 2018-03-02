@@ -72,14 +72,23 @@ PIVOT
 // echo "$sql"."</br>";
 $results1 = $conn->query($sql);
 
-$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit, $cost2
+$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
+matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, 
+matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, 
+CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit, 
+$cost2, treason.REASON_DETAIL
 
-FROM matmgdb RIGHT OUTER JOIN
-    temp_cal_waste RIGHT OUTER JOIN
-	matmg_pur ON temp_cal_waste.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
+FROM         matmgdb INNER JOIN
+                      treason ON matmgdb.WASTE_REASON = treason.REASON_ID RIGHT OUTER JOIN
+                      temp_cal_waste RIGHT OUTER JOIN
+                      matmg_pur ON temp_cal_waste.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
+
 
 WHERE $filterDate
-GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT
+GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC, 
+matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, 
+matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT, 
+treason.REASON_DETAIL
 
 HAVING $h
 

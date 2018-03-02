@@ -70,7 +70,7 @@ $(document).ready(function() {
     });
 
     // autosave when change
-    $('.dropdownDepart,.dropdownGroup,.inputdateqty').change(function(event) {
+    $('.inputdateqty,.dropdownDepart,.dropdownGroup,.dropdownReason').change(function(event) {
             // loop value inputqty
         $('input[name^="mat_qty"]').each(function() {
             // check value inputqty
@@ -83,8 +83,18 @@ $(document).ready(function() {
             saveToTemp(resetForm);
         }
         var ddval = $('.inputdateqty').val();
-            chkval(ddval);
+        requireDate(ddval);
+        if (keyType == 'waste') {
+            // console.log('key waste');
+            var reasonValue = $('.dropdownReason').val();
+            if ((reasonValue != 'undefined') && (reasonValue != null)) {
+                loaddepart($(this));
+            }
+        }
+        else {
             loaddepart($(this));
+        }
+        event.preventDefault();
     });
 
 
@@ -119,11 +129,11 @@ $(document).ready(function() {
     // select2
     $('.dropDownOutletCode').select2();
 
-function chkval(data){
+function requireDate(data){
 
     if (data == '') {
         alert('กรุณาเลือกวันที่ก่อนครับ');
-        preventDefault; //Stop Action
+        event.preventDefault; //Stop Action
     }else{
         return;
     }
@@ -159,7 +169,7 @@ function loadRptSumWeek(){
         });
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val(); 
-            chkval(dsval);
+            requireDate(dsval);
             senddateToSumWeek();
 
         });
@@ -210,8 +220,8 @@ function loadWasteRpt(){
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val();
             var deval = $('.dateend').val();
-            chkval(dsval);
-            chkval(deval);
+            requireDate(dsval);
+            requireDate(deval);
 
             senddateToWaste();
             // alert(dsval);
@@ -259,7 +269,7 @@ function loadWeekRpt(){
         });
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val(); 
-            chkval(dsval);
+            requireDate(dsval);
             senddateToWeek();
 
         });
@@ -303,8 +313,8 @@ thisCalendar.datepicker('setDate', new Date(year, month, 1));
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val();
             var deval = $('.dateend').val();
-            chkval(dsval);
-            chkval(deval);
+            requireDate(dsval);
+            requireDate(deval);
             senddateToMonth();
         });    
     });
@@ -530,8 +540,12 @@ function loaddepart($t){
     var $dropdown1 = $('.dropdownDepart').val();
     var $dropdown2 = $('.dropdownGroup').val();
     var $dateqty   = $('.inputdateqty').val();
-
-        $('.showresult').load('script/q_mat_depart.php?depart='+$dropdown1 + '&group='+$dropdown2 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant+'&keytype='+keyType,function(){
+    var $dropdownReason = $('.dropdownReason').val();
+    var path = 'script/q_mat_depart.php?depart='+$dropdown1 + '&group='+$dropdown2 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant+'&keytype='+keyType
+    if ($dropdownReason != '') { 
+        path = path+'&reasonWaste='+$dropdownReason; 
+    }
+        $('.showresult').load(path,function(){
             filterTableAndInput();
         }); 
     }

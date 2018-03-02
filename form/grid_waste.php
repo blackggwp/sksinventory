@@ -1,31 +1,25 @@
 <?
 include 'script/conn.php';
 $g = $_GET;
-
-$sql = 'SELECT [MAT_GROUP],[MAT_GROUP_NAME] 
-FROM [MATERIAL_GROUP]';
-
-$sqlDepart = $conn->query($sql);
-
+$queryReason = ' SELECT REASON_ID, REASON_DETAIL FROM treason ';
+$resReasons = $conn->query($queryReason);
 ?>
 <html>
 <head>
-
 </head>
 <body>
-
   <div class="container-fluid">
     <div class="row-fluid">
     <div class="txtKeyType">
     <h1>คีย์สูญเสีย</h1>
   </div>
       <div class="txtdate">
-      <h2>วันที่:</h2>
+      <h2>1.เลือกวันที่สูญเสีย:</h2>
         <input type="text" name="dateqty" class="inputdateqty" value="" placeholder="เลือกวันที่">
       </div>
       <div id="secFilterDepart">  <!--******** Section Filter Department -->
-        <form>
-          <h2>แผนก:</h2>
+        <form name="form_grid_waste">
+          <h2>2.เลือกแผนก:</h2>
           <select class="dropdownDepart form-control input" name="selectFilterDepart" required></br>
             <option selected disabled>เลือกแผนก</option>
             <option value="all">All</option>
@@ -37,11 +31,24 @@ $sqlDepart = $conn->query($sql);
             <option value="bar">Bar</option>
             <option value="wash">Wash</option>
           </select>
-          <?php    
-            $conn = null; //Close the connection 
+      </div>
+      <div>
+      <h2>3.เลือกเหตุผลการสูญเสีย:</h2>
+      <?php
+
+      ?>
+          <select class="dropdownReason form-control input" name="selectReason" required></br>
+            <option selected disabled>เลือกเหตุผล</option>
+            <?php
+              foreach ($resReasons as $resReason) {
+              echo '<option value="'.$resReason[REASON_ID].'">'.$resReason[REASON_DETAIL].'</option>';
+              }
             ?>
-          </form>
-        </div>
+            <!-- <option value="other">อื่นๆ</option> -->
+          </select>
+      </div>
+        <?php $conn = null; //Close DB connection ?>
+        </form>
       </div>
     </div>
     <br>

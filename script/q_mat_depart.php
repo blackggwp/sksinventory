@@ -2,6 +2,7 @@
 include 'conn.php';
 // print_r($_GET);
 $depart = $_GET['depart'];
+$reasonWaste = $_GET['reasonWaste'];
 $group = $_GET['group'];
 $empcode = $_GET['empcode'];
 $plant = $_GET['plant'];
@@ -53,6 +54,7 @@ if (($plant != '') && ($depart != '')) {
                         <input type="hidden" name="mattdesc[]" value="'.$res[MAT_T_DESC].'">
                         <input type="hidden" name="mat_code[]" value="'.$res[MAT_CODE].'">
                         <input type="hidden" name="mat_depart[]" value="'.$res[MAT_DEPART].'">
+                        <input type="hidden" name="reason_waste" value="'.$reasonWaste.'">
                     </td>';
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">

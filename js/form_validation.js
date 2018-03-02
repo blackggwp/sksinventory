@@ -40,16 +40,4 @@ $(function() {
       form.submit();
     }
   });
-  
-  $("form[name='form_data']").validate({
-    rules: {
-      mat_qty: {
-        number: true,
-        require_from_group: [1, ".mat_qty"]
-      }
-    },
-    submitHandler: function(form) {
-      form.submit();
-    }
-  });
 });
