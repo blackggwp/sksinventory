@@ -37,6 +37,7 @@ if (($plant != '') && ($depart != '')) {
         <thead>
             <tr>
                 <th>MAT_DEPART</th>
+                <th>DATE</th>
                 <th>MAT_CODE</th>
                 <th>Description</th>
                 <th>Unit</th>       
@@ -48,7 +49,8 @@ if (($plant != '') && ($depart != '')) {
             <?php 
             foreach ($results as $res) {
                 echo '<tr class="trqty"> 
-                    <td>'.$res[MAT_DEPART].'</td>                                            
+                    <td>'.$res[MAT_DEPART].'</td>
+                    <td>'.$dateqty.'</td>                                         
                     <td>'.$res[MAT_CODE].'</td>
                     <td>'.$res[MAT_T_DESC].'
                         <input type="hidden" name="mattdesc[]" value="'.$res[MAT_T_DESC].'">
