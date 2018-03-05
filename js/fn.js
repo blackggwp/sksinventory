@@ -359,7 +359,7 @@ function senddateToWaste(){
     var date = $('#frmrpt').serialize();
         $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
             // var tbldata = r;
-            console.log(r);
+            // console.log(r);
             var dx = JSON.parse(r);
             tbldata = (dx['res']);
             
@@ -401,6 +401,11 @@ function senddateToWaste(){
                     dx['colName']
                 ,
                 summary: {
+                    totalItems: [{
+                        column: "Cost",
+                        summaryType: "sum",
+                        valueFormat: "Numeric"
+                    }],
                     groupItems: [{
                         column: "Cost",
                         summaryType: "sum",
