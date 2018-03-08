@@ -1,5 +1,7 @@
 <?php
 include 'conn.php';
+// adjust the memory allocation
+ini_set('memory_limit', '512M');
 $d = $_GET;
 $datestart = $d['datestart'];
 $dateend = $d['dateend'];
@@ -72,10 +74,32 @@ PIVOT
 // echo "$sql"."</br>";
 $results1 = $conn->query($sql);
 
-$sql3 = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
+$sqlCanViewCostPerUnit = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
 matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, 
 matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, 
 CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit, 
+$cost2, treason.REASON_DETAIL
+
+FROM         matmgdb INNER JOIN
+                      treason ON matmgdb.WASTE_REASON = treason.REASON_ID RIGHT OUTER JOIN
+                      temp_cal_waste RIGHT OUTER JOIN
+                      matmg_pur ON temp_cal_waste.MATERIAL = matmg_pur.MAT_CODE ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE
+
+
+WHERE $filterDate
+GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC, 
+matmgdb.BEGINING_QTY,matmgdb.LOSS_QTY,$datesql, 
+matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT, 
+treason.REASON_DETAIL
+
+HAVING $h
+
+";
+
+$sqlNotCanViewCostPerUnit = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
+matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, 
+matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, 
+
 $cost2, treason.REASON_DETAIL
 
 FROM         matmgdb INNER JOIN
@@ -97,12 +121,23 @@ HAVING $h
 // $results = $conn->query($sql3);
 // $table = printtable($results);
 // echo $table;
+$canViewCostPerUnit = false;
+if ($canViewCostPerUnit) {
+	$results = $conn->query($sqlCanViewCostPerUnit);
+	$results2 = $results;
+	$results2 = $conn->query($sqlCanViewCostPerUnit);
+	$results2->execute();
+	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+}
+else {
+	$results = $conn->query($sqlNotCanViewCostPerUnit);
+	$results2 = $results;
+	$results2 = $conn->query($sqlNotCanViewCostPerUnit);
+	$results2->execute();
+	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+	// echo $sqlNotCanViewCostPerUnit;
+}
 
-$results = $conn->query($sql3);
-$results2 = $results;
-$results2 = $conn->query($sql3);
-$results2->execute();
-$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
 require '../helperfunc.php';
 
