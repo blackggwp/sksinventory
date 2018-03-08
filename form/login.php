@@ -5,16 +5,6 @@
   WHERE     (plantid IS NOT NULL) AND (Outletname NOT LIKE '%ปิด%') ";
   $outletResults = $conn->query($sql);
   $ck = $_COOKIE;
-  // get outletCode
-  if ($ck['plant'] != '') {
-    foreach($outletResults as $outlet1){
-      if ($outlet1[plantid] == $ck['plant']) {
-        $outletCode = $outlet1[Outletcode];
-        break;
-      }
-    }
-  }
-  
 ?>
 <img src="./img/loading/ring.gif" id="loading-indicator" style="display:none" />
 
@@ -23,7 +13,7 @@
         <!-- <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a> -->
    		<span class="login-signup">
 		<h4><strong>รหัสพนักงาน: <?echo $ck['empcode'];?>
-   		สาขา: <?echo $outletCode;?>
+   		สาขา: <?php echo $ck['outletCode'];?>
         <a class="logoutbtn btn btn-warning">ออกจากระบบ</a></strong></h4>
  		</span>
 
@@ -41,7 +31,7 @@
                     <option selected disabled>เลือกสาขาที่นี่</option>
                       <?php
                         foreach ($outletResults as $outlet2) {
-                          echo '<option value="'.$outlet2[plantid].'">สาขา: '.$outlet2[Outletcode].'   Plant: '.$outlet2[plantid].'</option>';
+                          echo '<option value="'.$outlet2[plantid].'_'.$outlet2[Outletname].'_'.$outlet2[Outletcode].'">สาขา: '.$outlet2[Outletcode].'   Plant: '.$outlet2[plantid].' </option>';
                         }
                       ?>
                   </select>

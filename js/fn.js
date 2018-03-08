@@ -1,20 +1,13 @@
 $(document).ready(function() {    
     var isExportpdf = false;
     var cookieEmpcode = getCookie('empcode');
-    var cookiePlant = getCookie('plant');
+    var cookiePlant = getCookie('outletPlant');
     var keyType = getCookie('keytype');
+    var outletBrand = getCookie('outletBrand');
+    var outletCode = getCookie('outletCode');
 
     if ((cookieEmpcode == '') || (cookiePlant == '')) {
         $('.modalLogin').modal('toggle');
-
-        // prevent enter key when not yet enter empcode and plant
-        // $(':input.empcode').keypress(function(e) {
-        //     if(e.which == 13) {
-        //         $('.submitlogin').click();
-        //             e.preventDefault();
-        //     }
-        // });
-        
     }
 
     var isedit=false;
@@ -102,17 +95,43 @@ $(document).ready(function() {
         loadRpt();
     });
     $('#submitlogin').click(function(event) {
-        var $plant = $('.dropDownOutletCode').val();
+        // slice plant, outletCode and Brand
+        var $outletPlant_Name_Code = $('.dropDownOutletCode').val();
+        var outletPlant_Name_CodeArr = $outletPlant_Name_Code.split('_',3);
+        var $outletPlant = outletPlant_Name_CodeArr[0];
+        var $Name = outletPlant_Name_CodeArr[1];
+        var $outletCode = outletPlant_Name_CodeArr[2];
+        var $outletBrand = '';
+        
+          // set outlet brand
+        var outletKeywords = ['bbq','buffet','seoul'];
+        var flagOutlet = '';
+        for(i = 0;i < outletKeywords.length;i++) {
+            if ($Name.toLowerCase().indexOf(outletKeywords[i]) !== -1){
+                $outletBrand = outletKeywords[i];
+                break;
+            }
+        }
+        // check outlet can key
+        if ($outletBrand == '') {
+            alert('ขณะนี้เปิดให้ใช้งานได้เฉพาะ BQ, BF, SG กรุณาเลือกสาขาอีกครั้ง');
+            event.preventDefault();
+            // location.reload();
+        }
         var $empcode = $('.empcode').val();
-        if (($empcode != '') && ($empcode.length == 6) && ($plant != null)) {
-            checkLogin($empcode,$plant);
+
+        if (($empcode != '') && ($empcode.length == 6) 
+            && ($outletCode != null) && ($outletBrand != '')) {
+            checkLogin($empcode,$outletPlant,$outletBrand,$outletCode);
         }
     });
 
     $('.logoutbtn').click(function(event) {
         setCookie('empcode','',-1);
-        setCookie('plant','',-1);
+        setCookie('outletPlant','',-1);
         setCookie('keytype','',-1);
+        setCookie('outletBrand','',-1);
+        setCookie('outletCode','',-1);
         location.reload();
     });
 
@@ -342,11 +361,13 @@ function getCookie(cname) {
     return "";
 }
 
-function checkLogin($empcode,$plant){
+function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode){
     setCookie('empcode',$empcode,1);
-    setCookie('plant',$plant,1);
-    $('.modalLogin').modal('toggle');
+    setCookie('outletPlant',$outletPlant,1);
+    setCookie('outletBrand',$outletBrand,1);
+    setCookie('outletCode',$outletCode,1);
 
+    $('.modalLogin').modal('toggle');
     event.preventDefault(); 
     window.location.replace("index.php");
 }
@@ -404,13 +425,15 @@ function senddateToWaste(){
                     totalItems: [{
                         column: "Cost",
                         summaryType: "sum",
-                        valueFormat: "Numeric"
+                        valueFormat: "Numeric",
+                        precision: 2
                     }],
                     groupItems: [{
                         column: "Cost",
                         summaryType: "sum",
                         valueFormat: "Numeric",
                         displayFormat: "{0}",
+                        precision: 2,
                         showInGroupFooter: true
                     }]
                 }
@@ -459,6 +482,7 @@ function senddateToWeek(){
                         summaryType: "sum",
                         valueFormat: "Numeric",
                         displayFormat: "{0}",
+                        precision: 2,
                         showInGroupFooter: true
                     }]
                 }
@@ -512,6 +536,7 @@ function senddateToMonth(){
                         summaryType: "sum",
                         // valueFormat: "currency",
                         displayFormat: "{0}",
+                        precision: 2,
                         showInGroupFooter: true
                     }]
                 }
@@ -546,7 +571,8 @@ function loaddepart($t){
     var $dropdown2 = $('.dropdownGroup').val();
     var $dateqty   = $('.inputdateqty').val();
     var $dropdownReason = $('.dropdownReason').val();
-    var path = 'script/q_mat_depart.php?depart='+$dropdown1 + '&group='+$dropdown2 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant+'&keytype='+keyType
+    var path = 'script/q_mat_depart.php?depart='+$dropdown1 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' 
+    +cookiePlant+'&keytype='+keyType + '&brand=' + outletBrand + '&outletCode=' + outletCode
     if ($dropdownReason != '') { 
         path = path+'&reasonWaste='+$dropdownReason; 
     }
@@ -739,7 +765,7 @@ function remsg(callb){
 function resetForm() {
     // $('.example input[type="number"]').val('');
     // window.alert('resetForm func exec');
-    document.getElementById("form_inputqty").reset();
+    document.getElementById('form_inputqty').reset();
 }
 
 function resetDepart() {

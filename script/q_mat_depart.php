@@ -3,23 +3,25 @@ include 'conn.php';
 // print_r($_GET);
 $depart = $_GET['depart'];
 $reasonWaste = $_GET['reasonWaste'];
-$group = $_GET['group'];
 $empcode = $_GET['empcode'];
 $plant = $_GET['plant'];
+$outletCode = $_GET['outletCode'];
 $dateqty = $_GET['dateqty'];
 $keyType = $_GET['keytype'];
+$brand = $_GET['brand'];
 $dateShowHeader = date('d-m-Y', strtotime($dateqty));
 $dateValue = $dateqty;
 $m = $dateqty;
 $d = $dateqty;
 
 if (($plant != '') && ($depart != '')) {
-    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE
-    FROM matmg_pur ";
+    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE, MAT_GROUP
+    FROM material_pur 
+    WHERE BRAND = '".$brand."' ";
   if ($depart != 'all') {
-    $sql .= " WHERE ([matmg_pur].MAT_DEPART = '".$depart."') ";
+    $sql .= " AND ([material_pur].MAT_DEPART = '".$depart."') ";
   }
-  $sql .= " ORDER BY  dbo.matmg_pur.MAT_CODE ";
+  $sql .= " ORDER BY  dbo.material_pur.MAT_CODE ";
 //   echo $sql;
   $results = $conn->query($sql);
 }
@@ -57,6 +59,8 @@ if (($plant != '') && ($depart != '')) {
                         <input type="hidden" name="mat_code[]" value="'.$res[MAT_CODE].'">
                         <input type="hidden" name="mat_depart[]" value="'.$res[MAT_DEPART].'">
                         <input type="hidden" name="reason_waste" value="'.$reasonWaste.'">
+                        <input type="hidden" name="outletCode" value="'.$outletCode.'">
+                        <input type="hidden" name="mat_group[]" value="'.$res[MAT_GROUP].'">
                     </td>';
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">
