@@ -1,32 +1,32 @@
 <?php
-$g = $_GET;
+$p = $_POST;
 
-print_r($g);
+print_r($p);
 
 include 'conn.php';
 
 $datenow = date('Y-m-d');
-$dateqty = $g['dateqty'];
+$dateqty = $p['dateqty'];
 $dateqty = date('Y-m-d',strtotime($dateqty));
 $nextTuesday = date('Y-m-d',strtotime('next tuesday',$dateqty));
 
-$mat_codes = $g['mat_code'];
-$mat_qtys = $g['mat_qty'];
-$keytype = $g['keytype'];
-$mat_group = $g['mat_group'];
-$mat_depart = $g['mat_depart'];
-$reasonWaste = $g['reason_waste'];
+$mat_codes = $p['mat_code'];
+$mat_qtys = $p['mat_qty'];
+$keytype = $p['keytype'];
+$mat_group = $p['mat_group'];
+$mat_depart = $p['mat_depart'];
+$reasonWaste = $p['reason_waste'];
 
 
 if ($reasonWaste == 'undefined') {
 	$reasonWaste = '';
 }
-$empcode = $g['empcode'];
-$plant = $g['plant'];
-$outletCode = $g['outletCode'];
-$mattdesc = $g['mattdesc'];
-$unitcode = $g['unitcode'];
-$unitprice = $g['unitprice'];
+$empcode = $p['empcode'];
+$plant = $p['plant'];
+$outletCode = $p['outletCode'];
+$mattdesc = $p['mattdesc'];
+$unitcode = $p['unitcode'];
+$unitprice = $p['unitprice'];
 
 if (($keytype == 'ending') || ($keytype == 'waste')) {
 

@@ -97,6 +97,7 @@ $(document).ready(function() {
     $('#submitlogin').click(function(event) {
         // slice plant, outletCode and Brand
         var $outletPlant_Name_Code = $('.dropDownOutletCode').val();
+        var $empcode = $('.empcode').val();
         var outletPlant_Name_CodeArr = $outletPlant_Name_Code.split('_',3);
         var $outletPlant = outletPlant_Name_CodeArr[0];
         var $Name = outletPlant_Name_CodeArr[1];
@@ -118,11 +119,10 @@ $(document).ready(function() {
             event.preventDefault();
             // location.reload();
         }
-        var $empcode = $('.empcode').val();
 
         if (($empcode != '') && ($empcode.length == 6) 
-            && ($outletCode != null) && ($outletBrand != '')) {
-            checkLogin($empcode,$outletPlant,$outletBrand,$outletCode);
+            && ($outletPlant != null) && ($outletBrand != '')) {
+            checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event);
         }
     });
 
@@ -135,6 +135,7 @@ $(document).ready(function() {
         location.reload();
     });
 
+    // show gif loading while ajaxsend
     $(document).ajaxSend(function(event, request, settings) {
         $('#loading-indicator').show();
         $('.showresult').addClass('loading');
@@ -202,9 +203,9 @@ function loadUploadPage(){
 
             // var d = $('#fileToUpload').val();
             //     if (d != '') {
-            //         $.ajax({url: "./script/readfile.php",data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant  + '&keytype='+keyType, success: function(r){
-            //     // alert(r);
-            //     console.log(r);
+            //         $.ajax({url: "./script/readfile.php",data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant  + '&keytype='+keyType, success: function(response){
+            //     // alert(response);
+            //     console.log(response);
             //     // callb();
             // alert(d);
 
@@ -361,7 +362,7 @@ function getCookie(cname) {
     return "";
 }
 
-function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode){
+function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event) {
     setCookie('empcode',$empcode,1);
     setCookie('outletPlant',$outletPlant,1);
     setCookie('outletBrand',$outletBrand,1);
@@ -378,10 +379,17 @@ function checkDate(){
 
 function senddateToWaste(){
     var date = $('#frmrpt').serialize();
-        $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            // var tbldata = r;
-            // console.log(r);
-            var dx = JSON.parse(r);
+        $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant
+        , data:date
+        , success: function(response){
+            console.log(response);
+            try {
+                var dx = JSON.parse(response);
+            // var dx = JSON.parse(JSON.stringify(response));
+            } catch (error) {
+                alert('ทำรายการการไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ \n'+error);
+                location.reload();
+            }
             tbldata = (dx['res']);
             
             // $('.exportPDF').click(function(event) {
@@ -426,15 +434,20 @@ function senddateToWaste(){
                         column: "Cost",
                         summaryType: "sum",
                         valueFormat: "Numeric",
-                        precision: 2
+                        columnAutoWidth: true,
+                        customizeText: function (Cost) {
+                            return 'Total ' + Cost.value.toFixed(2);
+                        }
                     }],
                     groupItems: [{
                         column: "Cost",
                         summaryType: "sum",
                         valueFormat: "Numeric",
                         displayFormat: "{0}",
-                        precision: 2,
-                        showInGroupFooter: true
+                        showInGroupFooter: true,
+                        customizeText: function (Cost) {
+                            return Cost.value.toFixed(2);
+                        }
                     }]
                 }
             });
@@ -445,14 +458,18 @@ function senddateToWaste(){
 
 function senddateToWeek(){
     var date = $('#frmrpt').serialize();
-        
-        $.ajax({url: "./script/q_weekrpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            // console.log(r);
-            var dx = JSON.parse(r);
-            // var dx = JSON.parse(JSON.stringify(r));
+        $.ajax({url: "./script/q_weekrpt.php?plant=" + cookiePlant
+        , data:date
+        , success: function(response){
+            // console.log(response);
+            try {
+                var dx = JSON.parse(response);
+            // var dx = JSON.parse(JSON.stringify(response));
+            } catch (error) {
+                alert('ทำรายการการไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ \n'+error);
+                location.reload();
+            }
             tbldata = (dx['res']);
-
-        //   var arr = ['Beg', 'Code', 'Name'];
             $('#tblreport').dxDataGrid({ ////Devexpress
                 selection: {
                     mode: "multiple"
@@ -477,13 +494,24 @@ function senddateToWeek(){
                     dx['colName']
                 ,
                 summary: {
+                    totalItems: [{
+                        column: "Cost",
+                        summaryType: "sum",
+                        valueFormat: "Numeric",
+                        columnAutoWidth: true,
+                        customizeText: function (Cost) {
+                            return 'Total:' + Cost.value.toFixed(2);
+                        }
+                    }],
                     groupItems: [{
                         column: "Cost",
                         summaryType: "sum",
                         valueFormat: "Numeric",
                         displayFormat: "{0}",
-                        precision: 2,
-                        showInGroupFooter: true
+                        showInGroupFooter: true,
+                        customizeText: function (Cost) {
+                            return Cost.value.toFixed(2);
+                        }
                     }]
                 }
             });
@@ -501,12 +529,16 @@ function senddateToWeek(){
 function senddateToMonth(){
     var date = $('#frmrpt').serialize();
         
-        $.ajax({url: "./script/q_monthrpt.php?plant=" + cookiePlant,data:date, success: function(r){
-            // console.log(r);
-            var dx = JSON.parse(r);
+        $.ajax({url: "./script/q_monthrpt.php?plant=" + cookiePlant,data:date, success: function(response){
+            console.log(response);
+            try {
+                var dx = JSON.parse(response);
+            // var dx = JSON.parse(JSON.stringify(response));
+            } catch (error) {
+                alert('ทำรายการการไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ \n'+error);
+                location.reload();
+            }
             tbldata = (dx['res']);
-
-          var arr = ['Beg', 'Code', 'Name'];
             $('#tblreport').dxDataGrid({ ////Devexpress
                 selection: {
                     mode: "multiple"
@@ -531,13 +563,23 @@ function senddateToMonth(){
                     dx['colName']
                 ,
                 summary: {
+                    totalItems: [{
+                        column: "Cost",
+                        summaryType: "sum",
+                        valueFormat: "Numeric",
+                        customizeText: function (Cost) {
+                            return 'Total ' + Cost.value.toFixed(2);
+                        }
+                    }],
                     groupItems: [{
                         column: "Cost",
                         summaryType: "sum",
-                        // valueFormat: "currency",
+                        valueFormat: "Numeric",
                         displayFormat: "{0}",
-                        precision: 2,
-                        showInGroupFooter: true
+                        showInGroupFooter: true,
+                        customizeText: function (Cost) {
+                            return Cost.value.toFixed(2);
+                        }
                     }]
                 }
             });
@@ -556,8 +598,10 @@ function senddateToMonth(){
 function senddateToSumWeek(){
     var date = $('#frmrpt').serialize();
         
-        $.ajax({url: "./script/q_sumweekrpt.php?plant=" + cookiePlant+'&empcode='+cookieEmpcode,data:date, success: function(r){
-            var tbldata = r;
+        $.ajax({url: "./script/q_sumweekrpt.php?plant=" + cookiePlant+'&empcode='+cookieEmpcode
+        , data:date
+        , success: function(response){
+            var tbldata = response;
             $('.result').html(tbldata);
             // $('.exportPDF').click(function(event) {
             //     exportPDFFunc(tbldata);
@@ -568,7 +612,6 @@ function senddateToSumWeek(){
 
 function loaddepart($t){
     var $dropdown1 = $('.dropdownDepart').val();
-    var $dropdown2 = $('.dropdownGroup').val();
     var $dateqty   = $('.inputdateqty').val();
     var $dropdownReason = $('.dropdownReason').val();
     var path = 'script/q_mat_depart.php?depart='+$dropdown1 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' 
@@ -698,9 +741,12 @@ function saveToTemp(callb, event){
     var d = $('.form_data').serialize();
     // console.log(d);
     if (d != '') {
-        $.ajax({url: "./script/savetotemp.php",data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant + '&dateqty='+$dateqty + '&keytype='+keyType, success: function(r){
-        // alert(r);
-        console.log(r);
+        $.ajax({url: "./script/savetotemp.php"
+            , data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant + '&dateqty='+$dateqty + '&keytype='+keyType
+            , type:'POST'
+            , success: function(response){
+        // alert(response);
+        console.log(response);
         callb();
         isedit = false;
             }
@@ -733,12 +779,12 @@ function confirmdatadepart(callb){
 function savetodb(callb){
     $.ajax({
         url: 'script/savetodb.php',
-        success: function(r){
-            console.log(r);
-            callb(r,r);
+        success: function(response){
+            console.log(response);
+            callb(response,response);
            
         },
-        error: function(r){
+        error: function(response){
             alert('Save to Database failed : ' + r);
         }
     })
@@ -784,9 +830,9 @@ function exportPDFFunc(tbldata) {
     $.ajax({
                 url: './script/exportpdf.php',
                 type:'POST',
-                data:send,  success: function(r2){
+                data:send,  success: function(response2){
                     isExportpdf = true;
-                    console.log(r2);
+                    console.log(response2);
                     // redirectWindow.location.reload();
                     // window.location.reload(true);
                 viewPdf(0);
@@ -820,8 +866,8 @@ function delPdf(){
     $.ajax({
                 url: './script/delpdf.php',
                 type:'POST',
-                data:'&ajdata=' + 'test',  success: function(r2){
-                    console.log(r2);
+                data:'&ajdata=' + 'test',  success: function(response2){
+                    console.log(response2);
                     // redirectWindow.location;
                 }
             });

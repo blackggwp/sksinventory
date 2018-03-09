@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
 // adjust the memory allocation
-ini_set('memory_limit', '512M');
+// ini_set('memory_limit', '512M');
 $d = $_GET;
 $datestart = $d['datestart'];
 $dateend = $d['dateend'];
@@ -96,7 +96,7 @@ HAVING $h
 
 ";
 
-$sqlNotCanViewCostPerUnit = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
+$sqlCanNotViewCostPerUnit = "SELECT DISTINCT matmg_pur.MAT_CODE as Code, 
 matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name, 
 matmg_pur.UNIT_CODE as unit ,$datesql2,$totals, 
 
@@ -130,12 +130,12 @@ if ($canViewCostPerUnit) {
 	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 }
 else {
-	$results = $conn->query($sqlNotCanViewCostPerUnit);
+	$results = $conn->query($sqlCanNotViewCostPerUnit);
 	$results2 = $results;
-	$results2 = $conn->query($sqlNotCanViewCostPerUnit);
+	$results2 = $conn->query($sqlCanNotViewCostPerUnit);
 	$results2->execute();
 	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
-	// echo $sqlNotCanViewCostPerUnit;
+	// echo $sqlCanNotViewCostPerUnit;
 }
 
 

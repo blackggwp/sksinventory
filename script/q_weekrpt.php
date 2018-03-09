@@ -57,18 +57,17 @@ $use = "CONVERT(nvarchar,$total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) AS Used";
 // $useperday = "CONVERT(nvarchar,CAST(($total - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END )  / 7 AS numeric(18,1)))  AS UsePerDay";
 $useperday = "CONVERT(nvarchar,ROUND((($total - ISNULL(dbo.matmgdb.ENDING_QTY,0))  / 7),1)) AS UsePerDay";
 
-// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),matmg_pur.UNIT_PRICE))) AS Cost";
-$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) * matmg_pur.UNIT_PRICE) as Cost";
+// $cost = "CONVERT(nvarchar,CONVERT(numeric(18,1),(($total) - CASE WHEN ISNULL(dbo.matmgdb.ENDING_QTY, 0) <= 0 THEN 0 END)  * CONVERT(numeric(18,1),material_pur.UNIT_PRICE))) AS Cost";
+$cost = "CONVERT(numeric(18,1),($total - ISNULL(dbo.matmgdb.ENDING_QTY,0)) * material_pur.UNIT_PRICE) as Cost";
 
 // $rptHeader = '<h3>Week Report</h3></br>';
 $dateHeader =  '<h3>'.'Date : '.'<strong>'.date('d-m-Y',strtotime($firstday)).'</strong>'.' to '.'<strong>'.date('d-m-Y',strtotime($endday)).'</strong>'.'</h3>';
 
-$sql1 ="
-		DROP table txw; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txw
-                                    FROM (SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
-                                                            FROM          tgrheader LEFT OUTER JOIN
-                      tgritems ON tgrheader.MAT_DOC = tgritems.MAT_DOC
-                                                            WHERE (tgritems.MOVE_TYPE = '101')  AND (tgritems.PLANT = '$plant')
+$sql1 =" DROP table txw; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesql into txw
+        FROM (SELECT     CONVERT(datetime,tgrheader.[PSTNG_DATE],103) AS D, REPLACE(tgritems.[ENTRY_QNT],'.000','') AS QTY,  tgritems.MATERIAL
+        FROM  tgrheader LEFT OUTER JOIN
+        	tgritems ON tgrheader.MAT_DOC = tgritems.MAT_DOC
+        WHERE (tgritems.MOVE_TYPE = '101')  AND (tgritems.PLANT = '$plant')
 ) s
  PIVOT (
  	MAX(QTY)
@@ -77,25 +76,58 @@ $sql1 ="
 ";
 $tempTable = $conn->query($sql1);
 
-$sql2 = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT matmg_pur.MAT_CODE as Code,matmg_pur.MAT_DEPART as Dep, matmg_pur.MAT_T_DESC as Name , matmg_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$use,$useperday, CAST(matmg_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$cost
+$sqlCanViewCostPerUnit = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT material_pur.MAT_CODE as Code,material_pur.MAT_DEPART as Dep, material_pur.MAT_T_DESC as Name , material_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,,$cost, CAST(material_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$use,$useperday
 
- FROM  matmgdb RIGHT OUTER JOIN
-    matmg_pur ON matmgdb.MAT_CODE = matmg_pur.MAT_CODE LEFT OUTER JOIN
-    txw ON matmg_pur.MAT_CODE = txw.MATERIAL
+FROM  matmgdb RIGHT OUTER JOIN
+    material_pur ON matmgdb.MAT_CODE = material_pur.MAT_CODE LEFT OUTER JOIN
+    txw ON material_pur.MAT_CODE = txw.MATERIAL
 
-
-GROUP BY matmg_pur.MAT_CODE,matmg_pur.MAT_DEPART,matmg_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, matmg_pur.UNIT_PRICE, matmg_pur.UNIT_CODE,matmgdb.PLANT
+GROUP BY material_pur.MAT_CODE,material_pur.MAT_DEPART,material_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, material_pur.UNIT_PRICE, material_pur.UNIT_CODE,matmgdb.PLANT
 
 HAVING $h) AS t1 LEFT OUTER JOIN
                       matmgdb AS matmgdb_1 ON matmgdb_1.MAT_CODE = t1.Code 
                        $filterBeg
 ";
+
+$sqlCanNotViewCostPerUnit = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT material_pur.MAT_CODE as Code,material_pur.MAT_DEPART as Dep, material_pur.MAT_T_DESC as Name , material_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$cost,$use,$useperday
+
+ FROM  material_pur LEFT OUTER JOIN
+ 	txw ON material_pur.MAT_CODE = txw.MATERIAL LEFT OUTER JOIN
+    matmgdb ON material_pur.MAT_CODE = matmgdb.MAT_CODE 
+
+GROUP BY material_pur.MAT_CODE,material_pur.MAT_DEPART,material_pur.MAT_T_DESC,matmgdb.BEGINING_QTY,matmgdb.ENDING_QTY,$datesql, matmgdb.SAVED_DATE, material_pur.UNIT_PRICE, material_pur.UNIT_CODE,matmgdb.PLANT
+
+HAVING $h) AS t1 LEFT OUTER JOIN
+                      matmgdb AS matmgdb_1 ON matmgdb_1.MAT_CODE = t1.Code 
+                       $filterBeg
+";
+// echo $sql1;
 // echo $sql2;
 
-$results = $conn->query($sql2);
-$results2 = $results;
-$results2->execute();
-$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+// $results = $conn->query($sql2);
+// $results2 = $results;
+// $results2->execute();
+// $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+
+$canViewCostPerUnit = false;
+if ($canViewCostPerUnit) {
+	$results = $conn->query($sqlCanViewCostPerUnit);
+	$results2 = $results;
+	$results2 = $conn->query($sqlCanViewCostPerUnit);
+	$results2->execute();
+	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+	// echo $sqlCanViewCostPerUnit;
+	
+}
+else {
+	$results = $conn->query($sqlCanNotViewCostPerUnit);
+	$results2 = $results;
+	$results2 = $conn->query($sqlCanNotViewCostPerUnit);
+	$results2->execute();
+	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
+	// echo $sql1;
+	// echo $sqlCanNotViewCostPerUnit;
+}
 
 $dx=array();
 // $dx["debugQuery"]=$sql2;
