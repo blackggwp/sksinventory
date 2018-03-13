@@ -5,7 +5,8 @@
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <!-- <link href="css/theme.css" rel="stylesheet"> -->
-  <link href="css/bootstrap_yeti.css" rel="stylesheet">
+  <!-- <link href="css/bootstrap_yeti.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="css/bootstrap_yeti.css?<?php echo '?ver=' . filemtime('css/bootstrap_yeti.css'); ?>" type="text/css" media="screen, projection" />
   
   <link href="jqueryui/jquery-ui.min.css" rel="stylesheet">
   <link href="jqueryui/jquery-ui.theme.min.css" rel="stylesheet">

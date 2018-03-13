@@ -14,7 +14,7 @@ $mat_codes = $p['mat_code'];
 $mat_qtys = $p['mat_qty'];
 $keytype = $p['keytype'];
 $mat_group = $p['mat_group'];
-$mat_depart = $p['mat_depart'];
+$mat_depart = strtoupper($p['mat_depart']);
 $reasonWaste = $p['reason_waste'];
 
 
@@ -23,7 +23,7 @@ if ($reasonWaste == 'undefined') {
 }
 $empcode = $p['empcode'];
 $plant = $p['plant'];
-$outletCode = $p['outletCode'];
+$outletCode = strtoupper($p['outletCode']);
 $mattdesc = $p['mattdesc'];
 $unitcode = $p['unitcode'];
 $unitprice = $p['unitprice'];
