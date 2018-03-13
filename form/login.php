@@ -1,15 +1,32 @@
 <?php
+  $ck = $_COOKIE;
+  $p = $_POST;
   include './script/conn.php';
-  $sql = " SELECT     Outletcode, plantid, Outletname
+  $outletCodeSQL = " SELECT     Outletcode, plantid, Outletname
   FROM         matmg_outlet
   WHERE     (plantid IS NOT NULL) AND (Outletname NOT LIKE '%ปิด%') ";
-  $outletResults = $conn->query($sql);
-  $ck = $_COOKIE;
+  $outletResults = $conn->query($outletCodeSQL);
+
+  // print_r($p);
+  // check empcode
+// if (isset($p['submit_form_login'])) {
+// $checkEmpcode = $conn->prepare("SELECT nUserID FROM imp_emp2 WHERE (nUserID = ? )");  
+// $checkEmpcode->bindParam(1, $p['empcode']);
+// $checkEmpcode->execute();
+// $rowCount = $checkEmpcode->rowCount();
+// var_dump($rowCount);
+// if( $rowCount != 0 ) {
+//     echo '<input type="hidden" id="empcodePassed" value="'.$p['empcode'].'">';
+//   }
+//   else {
+//     echo '<input type="hidden" id="empcodePassed" value="notValid">';
+//   }
+// }
 ?>
 <img src="./img/loading/ring.gif" id="loading-indicator" style="display:none" />
 
 <div id="modalLogin">
-    <form id="form_login" name="form_login">
+    <form id="form_login" name="form_login" method="POST">
         <!-- <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a> -->
    		<span class="login-signup">
 		<h4><strong>รหัสพนักงาน: <?echo $ck['empcode'];?>
@@ -37,11 +54,11 @@
                   </select>
                 <h2>รหัสพนักงาน</h2>
                 <label id="empcode-error" class="error" for="empcode"></label><br>
-                <input class="empcode form-control" type="number" name="empcode" placeholder="ระบุรหัสพนักงาน">
+                <input class="empcode form-control" id="empcode" type="number" name="empcode" placeholder="ระบุรหัสพนักงาน">
               </div>
               <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                <button type="submit" id="submitlogin" class="btn btn-primary">เข้าสู่ระบบ</button>
+                <button type="submit" id="submitlogin" name="submit_form_login" class="btn btn-primary">เข้าสู่ระบบ</button>
               </div>
             </div>
           </div>

@@ -95,9 +95,9 @@ $(document).ready(function() {
         loadRpt();
     });
     $('#submitlogin').click(function(event) {
-        // slice plant, outletCode and Brand
+            // slice plant, outletCode and Brand
         var $outletPlant_Name_Code = $('.dropDownOutletCode').val();
-        var $empcode = $('.empcode').val();
+        var $empcode = $('#empcode').val();
         var outletPlant_Name_CodeArr = $outletPlant_Name_Code.split('_',3);
         var $outletPlant = outletPlant_Name_CodeArr[0];
         var $Name = outletPlant_Name_CodeArr[1];
@@ -122,9 +122,26 @@ $(document).ready(function() {
 
         if (($empcode != '') && ($empcode.length == 6) 
             && ($outletPlant != null) && ($outletBrand != '')) {
-            checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event);
+                     // alert($empcode);
+            if ($empcode.length == 6) {
+                // alert($empcode);
+                $.ajax({url: "./script/q_login.php?&empcode="+$empcode
+                , type:'GET'
+                , success: function(response){
+                    var res = JSON.parse(response);
+                    if (res['res'] == 'foundedUserID') {
+                        checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event);
+                    }else{
+                        alert('รหัสพนักงานไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ');
+                        return;
+                    }
+                }
+            });
+            }
         }
+        
     });
+    
 
     $('.logoutbtn').click(function(event) {
         setCookie('empcode','',-1);

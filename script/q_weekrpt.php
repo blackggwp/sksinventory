@@ -76,7 +76,7 @@ $sql1 =" DROP table txw; SELECT  SUBSTRING([MATERIAL],9,10) as MATERIAL ,$datesq
 ";
 $tempTable = $conn->query($sql1);
 
-$sqlCanViewCostPerUnit = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT material_pur.MAT_CODE as Code,material_pur.MAT_DEPART as Dep, material_pur.MAT_T_DESC as Name , material_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,,$cost, CAST(material_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$use,$useperday
+$sqlCanViewCostPerUnit = "SELECT matmgdb_1.BEGINING_QTY AS Beg,t1.* FROM (SELECT DISTINCT material_pur.MAT_CODE as Code,material_pur.MAT_DEPART as Dep, material_pur.MAT_T_DESC as Name , material_pur.UNIT_CODE as unit,matmgdb.SAVED_DATE,$datesql2,$totals, matmgdb.ENDING_QTY as Ending,$cost, CAST(material_pur.UNIT_PRICE AS numeric(18,1)) as costPerUnit,$use,$useperday
 
 FROM  matmgdb RIGHT OUTER JOIN
     material_pur ON matmgdb.MAT_CODE = material_pur.MAT_CODE LEFT OUTER JOIN
@@ -109,8 +109,16 @@ HAVING $h) AS t1 LEFT OUTER JOIN
 // $results2->execute();
 // $results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 
-$canViewCostPerUnit = false;
-if ($canViewCostPerUnit) {
+// check permission canViewCostPerUnit
+$checkPermissionSQL = " SELECT TOP (1) imp_emp2.nUserID, T_Permission.canViewCostPerUnit
+FROM imp_emp2 INNER JOIN
+T_Permission ON imp_emp2.levelCode = T_Permission.levelCode
+WHERE (imp_emp2.nUserID = '".$_COOKIE['empcode']."') ";
+$checkPermission = $conn->query( $checkPermissionSQL, PDO::FETCH_COLUMN, 1 );  
+$row = $checkPermission->fetch(PDO::FETCH_ASSOC);
+// var_dump($row['canViewCostPerUnit']);
+	// echo $sqlCanViewCostPerUnit;
+if ($row['canViewCostPerUnit']) {
 	$results = $conn->query($sqlCanViewCostPerUnit);
 	$results2 = $results;
 	$results2 = $conn->query($sqlCanViewCostPerUnit);

@@ -121,8 +121,16 @@ HAVING $h
 // $results = $conn->query($sql3);
 // $table = printtable($results);
 // echo $table;
-$canViewCostPerUnit = false;
-if ($canViewCostPerUnit) {
+
+// check permission canViewCostPerUnit
+$checkPermissionSQL = " SELECT TOP (1) imp_emp2.nUserID, T_Permission.canViewCostPerUnit
+FROM imp_emp2 INNER JOIN
+T_Permission ON imp_emp2.levelCode = T_Permission.levelCode
+WHERE (imp_emp2.nUserID = '".$_COOKIE['empcode']."') ";
+$checkPermission = $conn->query( $checkPermissionSQL, PDO::FETCH_COLUMN, 1 );  
+$row = $checkPermission->fetch(PDO::FETCH_ASSOC);
+// var_dump($row['canViewCostPerUnit']);
+if ($row['canViewCostPerUnit']) {
 	$results = $conn->query($sqlCanViewCostPerUnit);
 	$results2 = $results;
 	$results2 = $conn->query($sqlCanViewCostPerUnit);
@@ -137,10 +145,7 @@ else {
 	$results2=$results2->fetchAll(PDO::FETCH_ASSOC);
 	// echo $sqlCanNotViewCostPerUnit;
 }
-
-
 require '../helperfunc.php';
-
 $dx=array();
 // $dx["debugSQL"] = $sql3;
 $dx["html"] = $dateHeader.$exportPDFLink;
