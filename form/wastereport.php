@@ -26,6 +26,7 @@ date_default_timezone_set('Asia/Bangkok');
 <div>
 	<div class="result table-responsive">
 	</div>
+	<br>
 		<div id="tblreport"></div> <!-- Datagrid  Devexpress-->
 	
 </div>

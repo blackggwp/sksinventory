@@ -113,7 +113,8 @@ require '../helperfunc.php';
 
 $dx=array();
 // $dx["debugSQL"] = $sql2;
-$dx["html"] = $dateHeader.$exportPDFLink;
+$exportButton    = '<button id="export_btn">ExportToExcel</button>';
+$dx["html"] = $dateHeader.$exportButton;
 $dx["res"]    = $results2;
 $dx["colName"] = getColName($results);
 

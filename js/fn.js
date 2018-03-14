@@ -427,11 +427,11 @@ function senddateToWaste(){
                 selection: {
                     mode: "multiple"
                 },
-                "export": {
-                    enabled: true,
-                    fileName: "matmg",
-                    allowExportSelectedData: true
-                },
+                // "export": {
+                //     enabled: true,
+                //     fileName: "matmg",
+                //     allowExportSelectedData: true
+                // },
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
@@ -469,6 +469,13 @@ function senddateToWaste(){
                 }
             });
             $('.result').html(dx['html']);
+            $("#export_btn").click(function(){
+                $("#tblreport").table2excel({
+                  // exclude CSS class
+                  exclude: ".noExl",
+                  name: "Excel Document Name"
+                }); 
+            });
             }
         });
 }
@@ -491,11 +498,11 @@ function senddateToWeek(){
                 selection: {
                     mode: "multiple"
                 },
-                "export": {
-                    enabled: true,
-                    fileName: "matmg",
-                    allowExportSelectedData: true
-                },
+                // "export": {
+                //     enabled: true,
+                //     fileName: "matmg",
+                //     allowExportSelectedData: true
+                // },
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
@@ -534,11 +541,13 @@ function senddateToWeek(){
             });
             $('.result').html(dx['html']);
 
-            // $('.exportPDF').click(function(event) {
-            //     var tbldata = $('#tblreport').html();
-            //     // console.log(tbldata);
-            //     exportPDFFunc(tbldata);
-            // });
+            $("#export_btn").click(function(){
+                $("#tblreport").table2excel({
+                  // exclude CSS class
+                  exclude: ".noExl",
+                  name: "Excel Document Name"
+                }); 
+            });
         }
         });
 }
@@ -560,11 +569,11 @@ function senddateToMonth(){
                 selection: {
                     mode: "multiple"
                 },
-                "export": {
-                    enabled: true,
-                    fileName: "matmg",
-                    allowExportSelectedData: true
-                },
+                // "export": {
+                //     enabled: true,
+                //     fileName: "matmg",
+                //     allowExportSelectedData: true
+                // },
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
@@ -602,11 +611,14 @@ function senddateToMonth(){
             });
             $('.result').html(dx['html']);
 
-            // $('.exportPDF').click(function(event) {
-            //     var tbldata = $('#tblreport').html();
-            //     // console.log(tbldata);
-            //     exportPDFFunc(tbldata);
-            // });
+            $("#export_btn").click(function(){
+                $("#tblreport").table2excel({
+                  // exclude CSS class
+                  exclude: ".noExl",
+                  name: "Excel Document Name"
+                }); 
+            });
+
             }
 
         });

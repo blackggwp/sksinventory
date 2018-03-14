@@ -52,6 +52,9 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script type="text/javascript" src="js/dx.all.js"></script> 
 <!-- devexpress -->
+<!-- table2excel lib -->
+<script type="text/javascript" src="js/table2excel.js"></script> 
+
 <!-- select2 -->
 <script src="js/select2.full.min.js"></script>
       <title>Inventory</title>
