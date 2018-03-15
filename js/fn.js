@@ -73,7 +73,7 @@ $(document).ready(function() {
         });
 
         if (isedit) {
-            saveToTemp(resetForm);
+            savetoDB(resetForm);
         }
         var ddval = $('.inputdateqty').val();
         requireDate(ddval);
@@ -98,6 +98,7 @@ $(document).ready(function() {
             // slice plant, outletCode and Brand
         var $outletPlant_Name_Code = $('.dropDownOutletCode').val();
         var $empcode = $('#empcode').val();
+        if ($empcode != '' && $outletPlant_Name_Code != null) {
         var outletPlant_Name_CodeArr = $outletPlant_Name_Code.split('_',3);
         var $outletPlant = outletPlant_Name_CodeArr[0];
         var $Name = outletPlant_Name_CodeArr[1];
@@ -130,15 +131,25 @@ $(document).ready(function() {
                 , success: function(response){
                     var res = JSON.parse(response);
                     if (res['res'] == 'foundedUserID') {
+                        // call back
                         checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event);
                     }else{
                         alert('รหัสพนักงานไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ');
                         return;
+                        // event.preventDefault();
                     }
                 }
             });
+            }else{
+                alert('กรุณากรอกรหัสพนักงานให้ถูกต้อง');
+                // event.preventDefault();
+                return;
             }
         }
+    }else{
+        // alert('กรุณากรอกข้อมูล');
+        // event.preventDefault();
+    }
         
     });
     
@@ -237,22 +248,25 @@ function loadUploadPage(){
 
 function loadWasteRpt(){
     setCookie('keytype','',-1);
-    $('#main').load('form/wastereport.php',function(){
+    $('#main').load('form/wastereport.php',function(event){
         var dst = $('.datestart');
         var de = $('.dateend');
-        isDatePicker(dst);
-
-            $('.datestart').change(function(){
-            var dsval = $('.datestart').val(); 
-            $('.dateend').datepicker({
-                minDate: dsval,
-                dateFormat: 'dd-mm-yy',
-                changeMonth: true,
-                changeYear: true,
-                selectOtherMonths: true
-            });
-                $('.dateend').focus().preventDefault();
-            });
+        // isDatePicker(dst);
+        $( dst ).datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            onClose: function () {
+                var dsval = $('.datestart').val(); 
+                $('.dateend').datepicker({
+                    minDate: dsval,
+                    dateFormat: 'dd-mm-yy',
+                    changeMonth: true,
+                    changeYear: true,
+                    selectOtherMonths: true
+                }).focus();
+            }
+        });
         
         $('.showrptbtn').click(function(event) {
             var dsval = $('.datestart').val();
@@ -316,20 +330,6 @@ function loadWeekRpt(){
 function loadMonthRpt(){
     setCookie('keytype','',-1);
     $('#main').load('form/monthreport.php',function(){
-    // var dst = $('.datestart');
-    // var de = $('.dateend');
-    //     isDatePicker(dst);
-
-    //     $('.datestart').change(function(){
-    //     var dsval = $('.datestart').val(); 
-    //     $('.dateend').datepicker({
-    //         minDate: dsval,
-    //         dateFormat: 'dd-mm-yy',
-            // changeMonth: true,
-            // changeYear: true
-    //     });
-    //         $('.dateend').focus().preventDefault();
-    //     });
 
     $('.datestart').datepicker({
         changeMonth: true,
@@ -385,8 +385,13 @@ function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event) {
     setCookie('outletBrand',$outletBrand,1);
     setCookie('outletCode',$outletCode,1);
 
+    // var cookieEmpcode = getCookie('empcode');
+    // var cookiePlant = getCookie('outletPlant');
+    
+    // console.log('empcode , plant'+cookieEmpcode+cookiePlant);
+    
     $('.modalLogin').modal('toggle');
-    event.preventDefault(); 
+    // event.preventDefault(); 
     window.location.replace("index.php");
 }
 
@@ -730,14 +735,14 @@ function filterTableAndInput(){
             
         $('.submitdata').click(function(event) {
             // window.alert('isedit = '+isedit);
-            saveToTemp(resetForm);
+            savetoDB(resetForm);
                 // isedit=false;
                 // location.reload();
                 // resetDepart(); 
         });
 }
 
-function saveToTemp(callb, event){
+function savetoDB(callb, event){
      // loop value inputqty
     $('input[name^="mat_qty"]').each(function() {
         // check value inputqty
@@ -749,7 +754,7 @@ function saveToTemp(callb, event){
             $(this).parent().parent().addClass('trischange');
         }
     });
-    // window.alert('isedit in savetotemp func = '+isedit);
+    // window.alert('isedit in savetoDB func = '+isedit);
     if(!isedit){
         callb();
     }
@@ -757,7 +762,7 @@ function saveToTemp(callb, event){
     // var isfound=false;
     // var $g=$('.tdqty:not(.tdischange)');
     // var val='';
-    // window.alert('isfound in savetotemp func = '+isfound);
+    // window.alert('isfound in savetoDB func = '+isfound);
     // if(!isfound){
         // callb();
     // }
@@ -770,7 +775,7 @@ function saveToTemp(callb, event){
     var d = $('.form_data').serialize();
     // console.log(d);
     if (d != '') {
-        $.ajax({url: "./script/savetotemp.php"
+        $.ajax({url: "./script/savetoDB.php"
             , data:d + '&empcode=' +cookieEmpcode + '&plant=' +cookiePlant + '&dateqty='+$dateqty + '&keytype='+keyType
             , type:'POST'
             , success: function(response){
@@ -782,47 +787,6 @@ function saveToTemp(callb, event){
         });
     };
 
-}
-
-function confirmdatadepart(callb){
-    $( ".dialog-confirmdatadepart" ).dialog({
-      resizable: false,
-      height: "auto",
-      width: 400,
-      modal: true,
-      buttons: {
-        OK: function() {
-          $( this ).dialog( "close" );
-          savetodb(function(r1,r2){
-            // alert(r1);
-            callb();
-          });
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        }
-      }
-    });
-}
-
-function savetodb(callb){
-    $.ajax({
-        url: 'script/savetodb.php',
-        success: function(response){
-            console.log(response);
-            callb(response,response);
-           
-        },
-        error: function(response){
-            alert('Save to Database failed : ' + r);
-        }
-    })
-    .done(function() {
-        console.log("success");
-    })
-    .fail(function() {
-        console.log("error");
-    });
 }
 
 function remsg(callb){

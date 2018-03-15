@@ -1,81 +1,114 @@
 <?php
-include ('conn.php');
-$sql = "INSERT INTO matmgdb ([MAT_CODE]
-      ,[MAT_QTY]
-      ,[PLANT]
-      ,[SAVED_BY]
-      ,[SAVED_DATE]
-      ,[DOC_STATUS]
-      ,[DOC_ID]
-      ,[MAT_GROUP]
-      ,[UNIT_PRICE]
-      ,[BEGINING_QTY]
-      ,[ENDING_QTY]
-      ,[LOSS_QTY]
-      ,[SYSTEM_DATE]
-      ,[MAT_DEPART]
-      ,[D01]
-      ,[D02]
-      ,[D03]
-      ,[D04]
-      ,[D05]
-      ,[D06]
-      ,[D07]
-      ,[YYMM]
-      ,[D08]
-      ,[D09]
-      ,[D10]
-      ,[D11]
-      ,[D12]
-      ,[D13]
-      ,[D14]
-      ,[D15]
-      ,[D16]
-      ,[D17]
-      ,[D18]
-      ,[D19]
-      ,[D20]
-      ,[D21]
-      ,[D22]
-      ,[D23]
-      ,[D24]
-      ,[D25]
-      ,[D26]
-      ,[D27]
-      ,[D28]
-      ,[D29]
-      ,[D30]
-      ,[D31])
-SELECT [MAT_CODE]
-      ,[MAT_QTY]
-      ,[PLANT]
-      ,[SAVED_BY]
-      ,[SAVED_DATE]
-      ,[DOC_STATUS]
-      ,[DOC_ID]
-      ,[MAT_GROUP]
-      ,[UNIT_PRICE]
-      ,[BEGINING_QTY]
-      ,[ENDING_QTY]
-      ,[LOSS_QTY]
-      ,[SYSTEM_DATE]
-      ,[MAT_DEPART]
-      
-FROM matmg
-WHERE DOC_STATUS = '1';
-DELETE FROM matmg WHERE DOC_STATUS = '1';
-";
-echo "$sql";
-try {
-	$move = $conn->query($sql);
-	
-} catch (Exception $e) {
-	echo "$e";
+$p = $_POST;
+
+print_r($p);
+
+include 'conn.php';
+
+$datenow = date('Y-m-d');
+$dateqty = $p['dateqty'];
+$dateqty = date('Y-m-d',strtotime($dateqty));
+$nextTuesday = date('Y-m-d',strtotime('next tuesday',$dateqty));
+
+$mat_codes = $p['mat_code'];
+$mat_qtys = $p['mat_qty'];
+$keytype = $p['keytype'];
+$mat_group = $p['mat_group'];
+$mat_depart = strtoupper($p['mat_depart']);
+$reasonWaste = $p['reason_waste'];
+
+
+if ($reasonWaste == 'undefined') {
+	$reasonWaste = '';
 }
-if ($move) {
-	echo "Save to DB complete";
-}else{
-	echo "Cannot Save Data To DB";
+$empcode = $p['empcode'];
+$plant = $p['plant'];
+$outletCode = strtoupper($p['outletCode']);
+$mattdesc = $p['mattdesc'];
+$unitcode = $p['unitcode'];
+$unitprice = $p['unitprice'];
+
+if (($keytype == 'ending') || ($keytype == 'waste')) {
+
+	if ($keytype == 'waste'){
+
+	for ($i=0; $i < count($mat_qtys) ; $i++) {
+		if ($mat_qtys[$i] != '') {
+			$sql = "INSERT INTO matmgdb 
+		([MAT_CODE],[LOSS_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP])
+		VALUES (
+			'".$mat_codes[$i]."'
+			,'".$mat_qtys[$i]."'
+			,'".$plant."'
+			,'".$empcode."'
+			,'1'
+			,'2'
+			,'".$mat_depart[$i]."'
+			,'".$datenow."'
+			,'".$dateqty."'
+			,'".$mattdesc[$i]."'
+			,'".$unitcode[$i]."'
+			,'".$unitprice[$i]."'
+			,'".$reasonWaste."'
+			,'".$outletCode."'
+			,'".$mat_group[$i]."'
+			
+			)";
+
+			$sall .= $sql;
+		}else {
+			echo '!!Please Enter data again'.'<br>';
+			return;
+		}	
+	}
+	}
+else {
+	for ($i=0; $i < count($mat_qtys) ; $i++) {
+			if ($mat_qtys[$i] != '') {
+		$sql = "INSERT INTO matmgdb 
+		([MAT_CODE],[ENDING_QTY],[BEGINING_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP])
+		VALUES (
+			'".$mat_codes[$i]."'
+			,'".$mat_qtys[$i]."'
+			,'".$mat_qtys[$i]."'
+			,'".$plant."'
+			,'".$empcode."'
+			,'1'
+			,'2'
+			,'".$mat_depart[$i]."'
+			,'".$datenow."'
+			,'".$dateqty."'
+			,'".$mattdesc[$i]."'
+			,'".$unitcode[$i]."'
+			,'".$unitprice[$i]."'
+			,'".$reasonWaste."'
+			,'".$outletCode."'
+			,'".$mat_group[$i]."'
+			
+			)";
+
+$sall .= $sql;
+			}else {
+			echo '!!Please Enter data again !';
+			return;
+			}
+	}
 }
 
-?>
+try {
+			$ins = $conn->query($sall);  ///////// Execute sql insert data
+		} catch (Exception $e) {
+			echo "Error: ".$e;
+		}
+
+		echo "$sall";
+		if ($ins) {
+			echo "Insert QTY Success";
+		}else {
+			echo "cannot insert data";
+		}
+
+	}
+
+
+	?>
