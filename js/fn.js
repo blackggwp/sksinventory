@@ -391,7 +391,7 @@ function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event) {
     // console.log('empcode , plant'+cookieEmpcode+cookiePlant);
     
     $('.modalLogin').modal('toggle');
-    // event.preventDefault(); 
+    event.preventDefault(); 
     window.location.replace("index.php");
 }
 
