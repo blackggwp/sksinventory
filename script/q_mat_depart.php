@@ -8,16 +8,16 @@ $plant = $_GET['plant'];
 $outletCode = $_GET['outletCode'];
 $dateqty = $_GET['dateqty'];
 $keyType = $_GET['keytype'];
-$brand = $_GET['brand'];
+$brandid = $_GET['brandid'];
 $dateShowHeader = date('d-m-Y', strtotime($dateqty));
 $dateValue = $dateqty;
 $m = $dateqty;
 $d = $dateqty;
 
 if (($plant != '') && ($depart != '')) {
-    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE, MAT_GROUP
+    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE, MAT_GROUP,BRAND_ID
     FROM material_pur 
-    WHERE BRAND = '".$brand."' ";
+    WHERE BRAND_ID = '".$brandid."' ";
   if ($depart != 'all') {
     $sql .= " AND ([material_pur].MAT_DEPART = '".$depart."') ";
   }
@@ -61,6 +61,7 @@ if (($plant != '') && ($depart != '')) {
                         <input type="hidden" name="reason_waste" value="'.$reasonWaste.'">
                         <input type="hidden" name="outletCode" value="'.$outletCode.'">
                         <input type="hidden" name="mat_group[]" value="'.$res[MAT_GROUP].'">
+                        <input type="hidden" name="brandid" value="'.$res[BRAND_ID].'">
                     </td>';
                 echo '<td>'.$res[UNIT_CODE].'
                 <input type="hidden" name="unitcode[]" value="'.$res[UNIT_CODE].'">

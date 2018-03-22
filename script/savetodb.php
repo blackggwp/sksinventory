@@ -24,6 +24,7 @@ if ($reasonWaste == 'undefined') {
 $empcode = $p['empcode'];
 $plant = $p['plant'];
 $outletCode = $p['outletCode'];
+$brandid = $p['brandid'];
 $mattdesc = $p['mattdesc'];
 $unitcode = $p['unitcode'];
 $unitprice = $p['unitprice'];
@@ -35,7 +36,7 @@ if (($keytype == 'ending') || ($keytype == 'waste')) {
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 		if ($mat_qtys[$i] != '') {
 			$sql = "INSERT INTO matmgdb 
-		([MAT_CODE],[LOSS_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP])
+		([MAT_CODE],[LOSS_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP],[BRAND_ID])
 		VALUES (
 			'".$mat_codes[$i]."'
 			,'".$mat_qtys[$i]."'
@@ -52,6 +53,7 @@ if (($keytype == 'ending') || ($keytype == 'waste')) {
 			,'".$reasonWaste."'
 			,'".strtoupper($outletCode)."'
 			,'".$mat_group[$i]."'
+			,'".$brandid."'
 			
 			)";
 
@@ -66,7 +68,7 @@ else {
 	for ($i=0; $i < count($mat_qtys) ; $i++) {
 			if ($mat_qtys[$i] != '') {
 		$sql = "INSERT INTO matmgdb 
-		([MAT_CODE],[ENDING_QTY],[BEGINING_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP])
+		([MAT_CODE],[ENDING_QTY],[BEGINING_QTY],[PLANT],[SAVED_BY],[DOC_STATUS],[DOC_ID],[MAT_DEPART],[SYSTEM_DATE],[SAVED_DATE],[MAT_T_DESC],[UNIT_CODE],[UNIT_PRICE],[WASTE_REASON],[OUTLET_CODE],[MAT_GROUP],[BRAND_ID])
 		VALUES (
 			'".$mat_codes[$i]."'
 			,'".$mat_qtys[$i]."'
@@ -84,6 +86,7 @@ else {
 			,'".$reasonWaste."'
 			,'".strtoupper($outletCode)."'
 			,'".$mat_group[$i]."'
+			,'".$brandid."'
 			
 			)";
 

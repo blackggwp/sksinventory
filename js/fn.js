@@ -3,8 +3,8 @@ $(document).ready(function() {
     var cookieEmpcode = getCookie('empcode');
     var cookiePlant = getCookie('outletPlant');
     var keyType = getCookie('keytype');
-    var outletBrand = getCookie('outletBrand');
     var outletCode = getCookie('outletCode');
+    var outletID = getCookie('outletID');
 
     if ((cookieEmpcode == '') || (cookiePlant == '')) {
         $('.modalLogin').modal('toggle');
@@ -97,33 +97,24 @@ $(document).ready(function() {
     });
     $('#submitlogin').click(function(event) {
             // slice plant, outletCode and Brand
-        var $outletPlant_Name_Code = $('.dropDownOutletCode').val();
+        var $outletPlant_brandid_Code = $('.dropDownOutletCode').val();
         var $empcode = $('#empcode').val();
-        if ($empcode != '' && $outletPlant_Name_Code != null) {
-        var outletPlant_Name_CodeArr = $outletPlant_Name_Code.split('_',3);
-        var $outletPlant = outletPlant_Name_CodeArr[0];
-        var $Name = outletPlant_Name_CodeArr[1];
-        var $outletCode = outletPlant_Name_CodeArr[2];
-        var $outletBrand = '';
-        
-          // set outlet brand
-        var outletKeywords = ['bbq','buffet','seoul'];
-        var flagOutlet = '';
-        for(i = 0;i < outletKeywords.length;i++) {
-            if ($Name.toLowerCase().indexOf(outletKeywords[i]) !== -1){
-                $outletBrand = outletKeywords[i];
-                break;
-            }
-        }
+        if ($empcode != '' && $outletPlant_brandid_Code != null) {
+        var outletPlant_brandid_CodeArr = $outletPlant_brandid_Code.split('_',3);
+        var $outletPlant = outletPlant_brandid_CodeArr[0];
+        var $outletID = outletPlant_brandid_CodeArr[1];
+        var $outletCode = outletPlant_brandid_CodeArr[2];
+        // alert($outletPlant_brandid_Code);
+
         // check outlet can key
-        if ($outletBrand == '') {
+        if ($outletID > 3) {
             alert('ขณะนี้เปิดให้ใช้งานได้เฉพาะ BQ, BF, SG กรุณาเลือกสาขาอีกครั้ง');
             event.preventDefault();
             // location.reload();
         }
 
         if (($empcode != '') && ($empcode.length == 6) 
-            && ($outletPlant != null) && ($outletBrand != '')) {
+            && ($outletPlant != null) && ($outletID != '')) {
                      // alert($empcode);
             if ($empcode.length == 6) {
                 // alert($empcode);
@@ -133,7 +124,7 @@ $(document).ready(function() {
                     var res = JSON.parse(response);
                     if (res['res'] == 'foundedUserID') {
                                                                                     // call back
-                        checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event,function(){
+                        checkLogin($empcode,$outletPlant,$outletCode,$outletID,event,function(){
                             // alert('in callb');
                             // setTimeout(function(){ 
                                 window.location.replace("index.php");
@@ -164,8 +155,8 @@ $(document).ready(function() {
         setCookie('empcode','',-1);
         setCookie('outletPlant','',-1);
         setCookie('keytype','',-1);
-        setCookie('outletBrand','',-1);
         setCookie('outletCode','',-1);
+        setCookie('outletID','',-1);
         location.reload();
     });
 
@@ -385,11 +376,11 @@ function getCookie(cname) {
     return "";
 }
 
-function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event,callb) {
+function checkLogin($empcode,$outletPlant,$outletCode,$outletID,event,callb) {
     setCookie('empcode',$empcode,1);
     setCookie('outletPlant',$outletPlant,1);
-    setCookie('outletBrand',$outletBrand,1);
     setCookie('outletCode',$outletCode,1);
+    setCookie('outletID',$outletID,1);
 
     // var cookieEmpcode = getCookie('empcode');
     // var cookiePlant = getCookie('outletPlant');
@@ -411,7 +402,7 @@ function checkDate(){
 
 function senddateToWaste(){
     var date = $('#frmrpt').serialize();
-        $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant
+        $.ajax({url: "./script/q_wasterpt.php?plant=" + cookiePlant + '&outletCode=' + outletCode
         , data:date
         , success: function(response){
             console.log(response);
@@ -659,7 +650,7 @@ function loaddepart($t){
     var $dateqty   = $('.inputdateqty').val();
     var $dropdownReason = $('.dropdownReason').val();
     var path = 'script/q_mat_depart.php?depart='+$dropdown1 + '&dateqty='+$dateqty + '&empcode=' +cookieEmpcode + '&plant=' 
-    +cookiePlant+'&keytype='+keyType + '&brand=' + outletBrand + '&outletCode=' + outletCode
+    +cookiePlant+'&keytype='+keyType + '&brandid=' + outletID + '&outletCode=' + outletCode
     if ($dropdownReason != '') { 
         path = path+'&reasonWaste='+$dropdownReason; 
     }

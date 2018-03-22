@@ -2,7 +2,7 @@
   $ck = $_COOKIE;
   $p = $_POST;
   include './script/conn.php';
-  $outletCodeSQL = " SELECT     Outletcode, plantid, Outletname
+  $outletCodeSQL = " SELECT     Outletcode, plantid, Outletname, brandid
   FROM         matmg_outlet
   WHERE     (plantid IS NOT NULL) AND (Outletname NOT LIKE '%ปิด%') ";
   $outletResults = $conn->query($outletCodeSQL);
@@ -48,7 +48,7 @@
                     <option selected disabled>เลือกสาขาที่นี่</option>
                       <?php
                         foreach ($outletResults as $outlet2) {
-                          echo '<option value="'.$outlet2[plantid].'_'.$outlet2[Outletname].'_'.$outlet2[Outletcode].'">สาขา: '.$outlet2[Outletcode].'   Plant: '.$outlet2[plantid].' </option>';
+                          echo '<option value="'.$outlet2[plantid].'_'.$outlet2[brandid].'_'.$outlet2[Outletcode].'">สาขา: '.$outlet2[Outletcode].'   Plant: '.$outlet2[plantid].' </option>';
                         }
                       ?>
                   </select>
