@@ -14,7 +14,7 @@ $mat_codes = $p['mat_code'];
 $mat_qtys = $p['mat_qty'];
 $keytype = $p['keytype'];
 $mat_group = $p['mat_group'];
-$mat_depart = strtoupper($p['mat_depart']);
+$mat_depart = $p['mat_depart'];
 $reasonWaste = $p['reason_waste'];
 
 
@@ -23,7 +23,7 @@ if ($reasonWaste == 'undefined') {
 }
 $empcode = $p['empcode'];
 $plant = $p['plant'];
-$outletCode = strtoupper($p['outletCode']);
+$outletCode = $p['outletCode'];
 $mattdesc = $p['mattdesc'];
 $unitcode = $p['unitcode'];
 $unitprice = $p['unitprice'];
@@ -43,14 +43,14 @@ if (($keytype == 'ending') || ($keytype == 'waste')) {
 			,'".$empcode."'
 			,'1'
 			,'2'
-			,'".$mat_depart[$i]."'
+			,'".strtoupper($mat_depart[$i])."'
 			,'".$datenow."'
 			,'".$dateqty."'
 			,'".$mattdesc[$i]."'
 			,'".$unitcode[$i]."'
 			,'".$unitprice[$i]."'
 			,'".$reasonWaste."'
-			,'".$outletCode."'
+			,'".strtoupper($outletCode)."'
 			,'".$mat_group[$i]."'
 			
 			)";
@@ -75,14 +75,14 @@ else {
 			,'".$empcode."'
 			,'1'
 			,'2'
-			,'".$mat_depart[$i]."'
+			,'".strtoupper($mat_depart[$i])."'
 			,'".$datenow."'
 			,'".$dateqty."'
 			,'".$mattdesc[$i]."'
 			,'".$unitcode[$i]."'
 			,'".$unitprice[$i]."'
 			,'".$reasonWaste."'
-			,'".$outletCode."'
+			,'".strtoupper($outletCode)."'
 			,'".$mat_group[$i]."'
 			
 			)";

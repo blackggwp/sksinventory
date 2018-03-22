@@ -9,7 +9,6 @@ $(document).ready(function() {
     if ((cookieEmpcode == '') || (cookiePlant == '')) {
         $('.modalLogin').modal('toggle');
     }
-
     var isedit=false;
     
     if (keyType == 'ending') {
@@ -73,7 +72,9 @@ $(document).ready(function() {
         });
 
         if (isedit) {
-            savetoDB(resetForm);
+            savetoDB(function(){
+                resetForm();
+            });
         }
         var ddval = $('.inputdateqty').val();
         requireDate(ddval);
@@ -131,8 +132,13 @@ $(document).ready(function() {
                 , success: function(response){
                     var res = JSON.parse(response);
                     if (res['res'] == 'foundedUserID') {
-                        // call back
-                        checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event);
+                                                                                    // call back
+                        checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event,function(){
+                            // alert('in callb');
+                            // setTimeout(function(){ 
+                                window.location.replace("index.php");
+                            //  }, 1000);
+                        });
                     }else{
                         alert('รหัสพนักงานไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ');
                         return;
@@ -379,7 +385,7 @@ function getCookie(cname) {
     return "";
 }
 
-function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event) {
+function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event,callb) {
     setCookie('empcode',$empcode,1);
     setCookie('outletPlant',$outletPlant,1);
     setCookie('outletBrand',$outletBrand,1);
@@ -389,10 +395,14 @@ function checkLogin($empcode,$outletPlant,$outletBrand,$outletCode,event) {
     // var cookiePlant = getCookie('outletPlant');
     
     // console.log('empcode , plant'+cookieEmpcode+cookiePlant);
-    
+
     $('.modalLogin').modal('toggle');
-    event.preventDefault(); 
-    window.location.replace("index.php");
+    // event.preventDefault();
+    console.log(getCookie('empcode'));
+    console.log(getCookie('outletPlant'));
+    
+    // alert('before callb');
+    callb();
 }
 
 function checkDate(){
@@ -732,17 +742,19 @@ function filterTableAndInput(){
             }
             
         });
-            
+
         $('.submitdata').click(function(event) {
             // window.alert('isedit = '+isedit);
-            savetoDB(resetForm);
+            savetoDB(function(){
+                resetForm();
+            });
                 // isedit=false;
                 // location.reload();
                 // resetDepart(); 
         });
 }
 
-function savetoDB(callb, event){
+function savetoDB(callb){
      // loop value inputqty
     $('input[name^="mat_qty"]').each(function() {
         // check value inputqty
