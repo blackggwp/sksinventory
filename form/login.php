@@ -58,7 +58,8 @@
               </div>
               <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                <button type="submit" id="submitlogin" name="submit_form_login" class="btn btn-primary">เข้าสู่ระบบ</button>
+                <!-- <button type="submit" id="submitlogin" name="submit_form_login" class="btn btn-large btn-block btn-primary">เข้าสู่ระบบ</button> -->
+                <button type="button" id="submitlogin" name="submit_form_login" class="btn btn-large btn-block btn-info">เข้าสู่ระบบ</button>
               </div>
             </div>
           </div>

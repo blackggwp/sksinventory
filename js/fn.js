@@ -95,27 +95,42 @@ $(document).ready(function() {
     $('.rptnav').click(function(event) {
         loadRpt();
     });
-    $('#submitlogin').click(function(event) {
+
+// $('#submitlogin').click(function(event) {
+$("#submitlogin").unbind("click").bind("click", function(event) {
+        event.stopPropagation();
             // slice plant, outletCode and Brand
         var $outletPlant_brandid_Code = $('.dropDownOutletCode').val();
         var $empcode = $('#empcode').val();
-        if ($empcode != '' && $outletPlant_brandid_Code != null) {
+        if ($empcode == '') {
+            alert('กรุณากรอกรหัสพนักงานก่อนครับ');
+            return;
+        }
+        else if ($outletPlant_brandid_Code == null) {
+            alert('กรุณาเลือกสาขาก่อนครับ');
+            return;            
+        }
+        else{
         var outletPlant_brandid_CodeArr = $outletPlant_brandid_Code.split('_',3);
         var $outletPlant = outletPlant_brandid_CodeArr[0];
         var $outletID = outletPlant_brandid_CodeArr[1];
         var $outletCode = outletPlant_brandid_CodeArr[2];
         // alert($outletPlant_brandid_Code);
-
+          // check outlet allow
+        var outletIDAllow = ['01','02','03'];
+        var isAllow = false;
+        for(i = 0;i < outletIDAllow.length;i++) {
+                if($outletID == outletIDAllow[i]){
+                    isAllow = true;
+                    break;
+                }
+        }
         // check outlet can key
-        if ($outletID > 3) {
+        if (!isAllow) {
             alert('ขณะนี้เปิดให้ใช้งานได้เฉพาะ BQ, BF, SG กรุณาเลือกสาขาอีกครั้ง');
             event.preventDefault();
             // location.reload();
         }
-
-        if (($empcode != '') && ($empcode.length == 6) 
-            && ($outletPlant != null) && ($outletID != '')) {
-                     // alert($empcode);
             if ($empcode.length == 6) {
                 // alert($empcode);
                 $.ajax({url: "./script/q_login.php?&empcode="+$empcode
@@ -142,12 +157,7 @@ $(document).ready(function() {
                 // event.preventDefault();
                 return;
             }
-        }
-    }else{
-        // alert('กรุณากรอกข้อมูล');
-        // event.preventDefault();
     }
-        
     });
     
 
