@@ -15,8 +15,8 @@ $m = $dateqty;
 $d = $dateqty;
 
 if (($plant != '') && ($depart != '')) {
-    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE, MAT_GROUP,BRAND_ID
-    FROM material_pur 
+    $sql = " SELECT DISTINCT MAT_CODE, MAT_T_DESC, MAT_DEPART, UNIT_CODE, MAT_GROUP,BRAND_ID, FORMAT(LAST_UPDATE, 'dd-MM-yyyy ') AS LAST_UPDATE
+	FROM material_pur 
     WHERE BRAND_ID = '".$brandid."' ";
   if ($depart != 'all') {
     $sql .= " AND ([material_pur].MAT_DEPART = '".$depart."') ";
@@ -42,6 +42,7 @@ if (($plant != '') && ($depart != '')) {
                 <th>DATE</th>
                 <th>MAT_CODE</th>
                 <th>Description</th>
+				<th>Last_Update</th>
                 <th>Unit</th>       
                 <th>Enter Data</th>
 
@@ -55,6 +56,7 @@ if (($plant != '') && ($depart != '')) {
                     <td>'.$dateqty.'</td>                                         
                     <td>'.$res[MAT_CODE].'</td>
                     <td>'.$res[MAT_T_DESC].'
+					<td>'.$res[LAST_UPDATE].'
                         <input type="hidden" name="mattdesc[]" value="'.$res[MAT_T_DESC].'">
                         <input type="hidden" name="mat_code[]" value="'.$res[MAT_CODE].'">
                         <input type="hidden" name="mat_depart[]" value="'.$res[MAT_DEPART].'">

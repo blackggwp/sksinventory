@@ -138,7 +138,7 @@ else {
 }
 
 $dx=array();
-// $dx["debugQuery"]=$sql2;
+// $dx["debugQuery"]=$sqlCanViewCostPerUnit;
 $exportButton    = '<button id="export_btn">ExportToExcel</button>';
 $dx["html"] = $dateHeader.$exportButton;
 $dx["res"]    = $results2;
@@ -148,7 +148,6 @@ $dx["colName"] = getColName($results);
 $json=json_encode($dx);
 echo $json;
 exit;
-
 function getColName($results){
 	$a=array();
 	$tcolumn = $results->columnCount();
@@ -164,7 +163,6 @@ function getColName($results){
 	}
 	return $a;
 }
-
 function pre($dr){
 	echo '<pre>';
 	print_r($dr);
@@ -175,76 +173,34 @@ function toJson($results){
 	echo $jres;
 }
 function printtable($results,$cost){
-
 	$tcolumn = $results->columnCount();
 	$h = '';
 	$f = '';
 	$cols=array();
 	$sumCost = '';
 		$h .= '<tr>';
-
 	for ($counter = 0; $counter < $tcolumn; $counter ++) {
 		$meta = $results->getColumnMeta($counter);
 		$h.='<th style="font-size:1em;">'.$meta['name'].'</th>';
-		
 	}   
 		$h .= '</tr>';
 	$r='';
-
 	foreach ($results as $dr) {
-
 		if ($dr['Dep'] == 'KITCHEN') {
 				$sumCost = $sumCost + $dr['Cost'];
-
 		}
-		// else{
-		// 	$r.='<tr>';
-		// 		for ($i=0; $i < $tcolumn; $i++) { 
-					
-		// 			$r.='<td>'.$sumCost.'</td>';
-						
-		// 		}
-			
-		// 	$r.='</tr>';
-		// }
 		$r.='<tr>';
-
 		for ($i = 0; $i < $tcolumn; $i ++) {
 			$val=str_replace(".00","",$dr[$i]);
-
-			// $val=$dr[$i];
-			// $val = str_replace(".00","",number_format($dr[$i], 2, '.', ''));
-
 			$r.='<td>'.$val.'</td>';
-
-			
 		}
-
-		
-
 		$r.='</tr>';
-
-		
-		
 	}
-		
 	$f ='<tfoot>'.$h.'</tfoot>';
-
-	// $f = '<tfoot>
- //            <tr>
- //                <th colspan="18" style="text-align:right">Total:</th>
- //                <th></th>
- //            </tr>
- //        </tfoot>';
 	$h ='<thead>'.$h.'</thead>';
 	$s.='<table id="tblreport" class="tblreport table table-hover">'.$h.'<tbody>'.$r.'</tbody>'.$f;
 	$s.='</table>';
-
 	return $s;
-
-
 }
-
 return;
-
 ?>

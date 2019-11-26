@@ -96,9 +96,12 @@ $(document).ready(function() {
         loadRpt();
     });
 
-// $('#submitlogin').click(function(event) {
+$( "#form_login" ).submit(function() {
+        // alert( "Handler for .submit() called." );
+        $('#submitlogin').click();
+});
 $("#submitlogin").unbind("click").bind("click", function(event) {
-        event.stopPropagation();
+        // event.stopPropagation();
             // slice plant, outletCode and Brand
         var $outletPlant_brandid_Code = $('.dropDownOutletCode').val();
         var $empcode = $('#empcode').val();
@@ -115,22 +118,7 @@ $("#submitlogin").unbind("click").bind("click", function(event) {
         var $outletPlant = outletPlant_brandid_CodeArr[0];
         var $outletID = outletPlant_brandid_CodeArr[1];
         var $outletCode = outletPlant_brandid_CodeArr[2];
-        // alert($outletPlant_brandid_Code);
-          // check outlet allow
-        var outletIDAllow = ['01','02','03'];
-        var isAllow = false;
-        for(i = 0;i < outletIDAllow.length;i++) {
-                if($outletID == outletIDAllow[i]){
-                    isAllow = true;
-                    break;
-                }
-        }
-        // check outlet can key
-        if (!isAllow) {
-            alert('ขณะนี้เปิดให้ใช้งานได้เฉพาะ BQ, BF, SG กรุณาเลือกสาขาอีกครั้ง');
-            event.preventDefault();
-            // location.reload();
-        }
+       
             if ($empcode.length == 6) {
                 // alert($empcode);
                 $.ajax({url: "./script/q_login.php?&empcode="+$empcode
@@ -451,6 +439,7 @@ function senddateToWaste(){
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
+                columnAutoWidth: true,
                 groupPanel: {
                     visible: true
                 },
@@ -501,7 +490,7 @@ function senddateToWeek(){
         $.ajax({url: "./script/q_weekrpt.php?plant=" + cookiePlant
         , data:date
         , success: function(response){
-            // console.log(response);
+            console.log(response);
             try {
                 var dx = JSON.parse(response);
             // var dx = JSON.parse(JSON.stringify(response));
@@ -593,6 +582,7 @@ function senddateToMonth(){
                 dataSource:dx['res'],
                 paging:false,
                 allowColumnResizing:true,
+                columnAutoWidth: true,
                 groupPanel: {
                     visible: true
                 },

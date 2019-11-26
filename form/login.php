@@ -29,8 +29,8 @@
     <form id="form_login" name="form_login" method="POST">
         <!-- <a class="btn btn-primary" data-toggle="modal" href='#modal-id'>Trigger modal</a> -->
    		<span class="login-signup">
-		<h4><strong>รหัสพนักงาน: <?echo $ck['empcode'];?>
-   		สาขา: <?php echo $ck['outletCode'];?>
+		<h4><strong>รหัสพนักงาน: <? if(isset($ck['empcode'])){echo $ck['empcode'];}?>
+   		สาขา: <?php if(isset($ck['outletCode'])){echo $ck['outletCode'];}?>
         <a class="logoutbtn btn btn-warning">ออกจากระบบ</a></strong></h4>
  		</span>
 
@@ -54,7 +54,7 @@
                   </select>
                 <h2>รหัสพนักงาน</h2>
                 <label id="empcode-error" class="error" for="empcode"></label><br>
-                <input class="empcode form-control" id="empcode" type="number" name="empcode" placeholder="ระบุรหัสพนักงาน">
+                <input class="empcode form-control" id="empcode" type="text" name="empcode" placeholder="ระบุรหัสพนักงาน">
               </div>
               <div class="modal-footer">
                 <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
